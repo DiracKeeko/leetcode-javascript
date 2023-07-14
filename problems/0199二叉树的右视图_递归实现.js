@@ -11,7 +11,7 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
-var rightSideView = function(root) {
+var rightSideView = function (root) {
   const res = [];
   function preOrder(node, deep) {
     if (node === null) {
@@ -25,5 +25,29 @@ var rightSideView = function(root) {
     preOrder(node.right, deep + 1);
   }
   preOrder(root, 0);
-  return res.map(item => item[item.length - 1]);
+  return res.map((item) => item[item.length - 1]);
 };
+/* 
+216/216 cases passed (56 ms)
+Your runtime beats 94.02 % of javascript submissions
+Your memory usage beats 11.36 % of javascript submissions (42.9 MB)
+*/
+
+var rightSideView02 = function (root) {
+  const res = [];
+  function preOrder(node, deep) {
+    if (node === null) {
+      return;
+    }
+    res[deep] = node.val;
+    preOrder(node.left, deep + 1);
+    preOrder(node.right, deep + 1);
+  }
+  preOrder(root, 0);
+  return res;
+};
+/* 
+216/216 cases passed (72 ms)
+Your runtime beats 26.98 % of javascript submissions
+Your memory usage beats 79.11 % of javascript submissions (42.5 MB)
+*/

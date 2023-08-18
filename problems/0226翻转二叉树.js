@@ -3,6 +3,8 @@
  * @lcpr version=21909
  *
  * [226] 翻转二叉树
+ * 
+ * 给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
  */
 
 // @lc code=start
@@ -19,14 +21,11 @@
  * @return {TreeNode}
  */
 var invertTree = function(root) {
-  function reverse(root) {
-    if (root === null) {
-      return null;
-    }
-    [root.left, root.right] = [root.right, root.left];
-    reverse(root.left);
-    reverse(root.right);
-    return root
+  if (root === null) {
+    return null;
   }
-  return reverse(root);
+  [root.left, root.right] = [root.right, root.left];
+  invertTree(root.left);
+  invertTree(root.right);
+  return root;
 };

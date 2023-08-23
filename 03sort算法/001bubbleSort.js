@@ -13,3 +13,6 @@ function bubbleSort(A) {
 
 const res = bubbleSort(arr.slice(0));
 console.log("res->", res);
+
+// 两次for循环，n x n
+// 二分查找的时间复杂度是 O(n^2)  

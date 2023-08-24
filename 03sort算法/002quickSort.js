@@ -39,4 +39,6 @@ function quickSort(arr) {
 
 console.log(quickSort(arr));
 
-// 快速排序的时间复杂度是 O(n * lg(n))
+// 快速排序的时间复杂度是 O(n * log(n))
+
+// 在本例的快速排序算法(quickSort)中，空间复杂度也是O(n * log(n)),这是一个不能被接受的空间复杂度

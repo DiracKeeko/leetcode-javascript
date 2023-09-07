@@ -22,10 +22,10 @@ var lengthOfLIS = function(nums) {
   }
   const dp = new Array(length).fill(1);
   for (let i = 0; i < nums.length; i++) {
-    const target = nums[i];
+    const end = nums[i];
     for (let j = 0; j < i; j++) {
-      const temp = nums[j];
-      if (target > temp) {
+      const jNum = nums[j];
+      if (end > jNum) {
         dp[i] = Math.max(dp[i], dp[j] + 1);
       }
     }

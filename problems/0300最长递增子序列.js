@@ -15,7 +15,7 @@
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
-  // dp[i] 代表nums[i]之前的数组, 最长递增子序列的长度
+  // dp[i] 代表nums数组中[0, i]双闭区间的数组，以nums[i]为最大值的 最长递增子序列的长度
   const length = nums.length;
   if (length === 0) {
     return 0;
@@ -30,5 +30,24 @@ var lengthOfLIS = function(nums) {
       }
     }
   }
+  console.log("dp->", dp);
   return Math.max(...dp);
 };
+
+// const nums = [10, 9, 10, 2, 5, 3, 7, 101, 18];
+/* 
+dp-> [
+  1, 1, 2, 1, 2,
+  2, 3, 4, 4
+]
+*/
+// console.log(lengthOfLIS(nums)); // 4
+
+const nums1 = [2, 3, 9, 7, 2, 6, 8];
+// /* 
+// dp-> [
+//   1, 2, 3, 3,
+//   1, 3, 4
+// ]
+// */
+console.log(lengthOfLIS(nums1)); // 4

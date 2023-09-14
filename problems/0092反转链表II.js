@@ -20,7 +20,34 @@
  * @param {number} right
  * @return {ListNode}
  */
+
 var reverseBetween = function (head, left, right) {
+  let dummy = new ListNode();
+  dummy.next = head;
+
+  let temp = dummy;
+  // temp移动到left位置的prev位置
+  for (let i = 0; i < left - 1; i++) {
+    temp = temp.next;
+  }
+
+  let prev = temp.next; // left 位置的节点
+  let cur = prev.next;
+  for (let j = 0; j < right - left; j++) {
+    let next = cur.next;
+    cur.next = prev;
+    prev = cur;
+    cur = next;
+  }
+
+  temp.next.next = cur;
+  temp.next = prev;
+  
+  return dummy.next;
+}
+
+// ↓ 第一版实现
+var reverseBetweenFirstVersion = function (head, left, right) {
   let sentry = new ListNode();
   sentry.next = head;
 

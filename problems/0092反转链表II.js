@@ -32,7 +32,7 @@ var reverseBetween = function (head, left, right) {
   }
 
   let prev = temp.next; // left 位置的节点
-  let cur = prev.next;
+  let cur = prev.next; // left 位置的下一节点。在下方的for循环完成之后，最终会变为right位置的节点
   for (let j = 0; j < right - left; j++) {
     let next = cur.next;
     cur.next = prev;

@@ -16,3 +16,20 @@ var isSymmetric = function(root) {
   }
   return check(root.left, root.right);
 };
+
+var isSymmetric = function(root) {
+  function check(a, b) {
+    if (!a && !b) {
+      return true;
+    }
+    if (!a || !b) {
+      return false;
+    }
+    if (a.val !== b.val) {
+      return false;
+    }
+    return check(a.left, b.right) && check(a.right, b.left);
+  }
+  // ↓ 在这里手动的将输入参数由单个，变为递归所需的两个
+  return check(root.left, root.right);
+};

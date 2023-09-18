@@ -1,3 +1,7 @@
+/*
+ * [144] 二叉树的前序遍历
+ */
+
 /**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
@@ -25,6 +29,24 @@ var preorderTraversal = function(root) {
       root = root.left;
     }
     root = stack.pop().right;
+  }
+  return res;
+};
+
+// ↓ 迭代算法的梳理 这个02版本逻辑更清楚
+// 前序遍历 -> 遍历顺序 根-左-右 (DLR)
+var preorderTraversal02 = function(root) {
+  if (root === null) {
+    return [];
+  }
+  const res = [];
+  const stack = [root];
+  while(stack.length) {
+    const cur = stack.pop();
+    res.push(cur.val);
+
+    cur.right && stack.push(cur.right);
+    cur.left && stack.push(cur.left);
   }
   return res;
 };

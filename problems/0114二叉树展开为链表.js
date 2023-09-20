@@ -21,18 +21,21 @@
  * @return {void} Do not return anything, modify root in-place instead.
  */
 var flatten = function(root) {
-  let sentry = new TreeNode();
-  const dummy = sentry;
-
-  function walk(node) {
-    sentry.left = null;
-    sentry.right = node;
-    sentry = sentry;
-
-    node.left && walk(node.left);
-    node.right && walk(node.right);
+  let res = [];
+  function preOrder(node) {
+    if (!node) {
+      return;
+    }
+    res.push(node);
+    preOrder(node.left);
+    preOrder(node.right);
   }
+  preOrder(root);
 
-  walk(root);
-  return dummy.right;
+  for (let i = 1; i < res.length; i++) {
+    const prev = res[i - 1];
+    const cur = res[i];
+    prev.left = null;
+    prev.right = cur;
+  }
 };

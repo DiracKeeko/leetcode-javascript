@@ -70,7 +70,8 @@ var minDepth = function(root) {
   while (queue.length) {
     const level = [];
     for (let i = 0; i < queue.length; i++) {
-      const node = queue.shift();
+      // const node = queue.shift(); // 这行代码有问题, queue的长度改变，会影响上一行queue.length 这个for循环的终止条件，让queue里的节点无法遍历完成
+      const node = queue[i]; // 换成这行，或者把for循环换成while循环
       if (!node.left && !node.right) {
         return res;
       }

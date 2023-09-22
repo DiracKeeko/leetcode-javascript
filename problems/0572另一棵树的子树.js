@@ -51,3 +51,25 @@ var isSubtree = function(root, subRoot) {
   
   return res;
 };
+
+
+function isSameTree(p, q) {
+  return JSON.stringify(p) === JSON.stringify(q);
+};
+
+var isSubtree = function(root, subRoot) {
+  if (!root && !subRoot) {
+    return true;
+  }
+
+  if (!root) {
+    return false;
+  }
+  
+  if (root.val === subRoot.val) {
+    if (isSameTree(root, subRoot)) {
+      return true;
+    }
+  }
+  return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+}

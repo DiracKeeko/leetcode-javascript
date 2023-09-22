@@ -41,3 +41,8 @@ var isSameTree = function(p, q) {
   }
   return (isSameTree(p.left, q.left) && isSameTree(p.right, q.right));
 };
+
+// ↓ 一个取巧的写法 做算法的时候不推荐
+var isSameTree = function(p, q) {
+  return JSON.stringify(p) === JSON.stringify(q);
+};

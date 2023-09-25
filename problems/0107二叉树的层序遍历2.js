@@ -1,3 +1,6 @@
+/*
+ * [107] 二叉树的层序遍历 II
+ */
 /* 
   给你二叉树的根节点 root ，返回其节点值 自底向上的层序遍历 。
   （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
@@ -15,6 +18,28 @@
  * @param {TreeNode} root
  * @return {number[][]}
  */
+
+var levelOrderBottom = function(root) {
+  const res = [];
+  if (!root) {
+    return res;
+  }
+
+  let queue = [root];
+  while (queue.length) {
+    const level = [];
+    const valArr = [];
+    for (let curNode of queue) {
+      valArr.push(curNode.val);
+      curNode.left && level.push(curNode.left);
+      curNode.right && level.push(curNode.right);
+    }
+    res.unshift(valArr); // 就是这里unshift
+    queue = level;
+  }
+  return res;
+};
+
 var levelOrderBottom = function(root) {
   let res = [];
   function preOrder(node, deep) {

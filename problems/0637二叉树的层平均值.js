@@ -25,24 +25,14 @@ var averageOfLevels = function(root) {
   let queue = [root];
   while (queue.length) {
     const level = [];
-    const valArr = [];
+    let sum = 0;
     for (let node of queue) {
-      valArr.push(node.val);
+      sum += node.val;
       node.left && level.push(node.left);
       node.right && level.push(node.right);
     }
-    resArr.push(getAvg(valArr));
+    resArr.push(sum / queue.length);
     queue = level;
   }
-
-  function getAvg(arr) {
-    const count = arr.length;
-    let sum = 0;
-    for (let num of arr) {
-      sum += num;
-    }
-    return sum / count;
-  }
-
   return resArr;
 };

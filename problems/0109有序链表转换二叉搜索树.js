@@ -51,3 +51,30 @@ var sortedArrayToBST = function(nums) {
   root.right = sortedArrayToBST(nums.slice(midIndex + 1));
   return root;
 };
+
+
+// 直接递归操作链表来实现
+var sortedListToBST = function(head) {
+  if (!head) {
+    return null;
+  }
+
+  function traverse(head, tail) {
+    if (head === tail) {
+      return null;
+    }
+    let fast = head;
+    let slow = head;
+    while (fast !== tail && fast.next !== tail) {
+      fast = fast.next.next;
+      slow = slow.next;
+    }
+
+    const root = new TreeNode(slow.val);
+    root.left = traverse(head, slow);
+    root.right = traverse(slow.next, tail);
+    return root;
+  }
+
+  return traverse(head, null);
+};

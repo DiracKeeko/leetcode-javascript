@@ -39,3 +39,18 @@ var searchBST = function(root, val) {
   }
   return null;
 };
+
+// ↓ 一个类似二分的思路 这个解法效率很高
+var searchBST = function(root, val) {
+  if (!root) {
+    return null;
+  }
+
+  if (root.val === val) {
+    return root;
+  } else if (root.val > val) {
+    return searchBST(root.left, val);
+  } else if (root.val < val) {
+    return searchBST(root.right, val);
+  }
+};

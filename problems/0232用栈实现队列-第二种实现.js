@@ -17,8 +17,8 @@
   你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。
 */
 var MyQueue = function() {
-  this.stack1 = [];
-  this.stack2 = [];
+  this.stackIn = [];
+  this.stackOut = [];
 };
 
 /** 
@@ -26,43 +26,29 @@ var MyQueue = function() {
  * @return {void}
  */
 MyQueue.prototype.push = function(x) {
-  this.stack1.push(x);
+  this.stackIn.push(x);
 };
 
 /**
  * @return {number}
  */
 MyQueue.prototype.pop = function() {
-  if (this.stack1.length === 0) {
-    return null;
+  if (this.stackOut.length !== 0) {
+    return this.stackOut.pop();
   }
 
-  while (this.stack1.length > 1) {
-    this.stack2.push(this.stack1.pop());
+  while (this.stackIn.length !== 0) {
+    this.stackOut.push(this.stackIn.pop());
   }
-  const res = this.stack1.pop();
-  while (this.stack2.length) {
-    this.stack1.push(this.stack2.pop());
-  }
-  return res;
+  return this.stackOut.pop();
 };
 
 /**
  * @return {number}
  */
 MyQueue.prototype.peek = function() {
-  if (this.stack1.length === 0) {
-    return null;
-  }
-
-  while (this.stack1.length > 1) {
-    this.stack2.push(this.stack1.pop());
-  }
-  const res = this.stack1.pop();
-  this.stack2.push(res);
-  while (this.stack2.length) {
-    this.stack1.push(this.stack2.pop());
-  }
+  const res = this.pop();
+  this.stackOut.push(res);
   return res;
 };
 
@@ -70,28 +56,28 @@ MyQueue.prototype.peek = function() {
  * @return {boolean}
  */
 MyQueue.prototype.empty = function() {
-  return this.stack1.length === 0;
+  return this.stackIn.length === 0 && this.stackOut.length === 0;
 };
 
 /* 
-  stack1   [] 进|出
-  stack2  [] 进|出
+  stackIn   [] 进|出
+  stackOut  [] 进|出
 
   实现队列的pop(); (得到1)
   1、
-  stack1   [1, 2, 3] 进|出
-  stack2  [] 进|出
+  stackIn   [1, 2, 3] 进|出
+  stackOut  [] 进|出
   
   2、
-  stack1   [1] 进|出
-  stack2  [3, 2] 进|出
+  stackIn   [1] 进|出
+  stackOut  [3, 2] 进|出
 
   3、
-  stack1   [] 进|出 -> 弹出1
-  stack2  [3, 2] 进|出
+  stackIn   [] 进|出 -> 弹出1
+  stackOut  [3, 2] 进|出
 
-  4、
-  stack1   [2, 3] 进|出
-  stack2  [] 进|出
+  4、 再次pop()
+  stackIn   [] 进|出
+  stackOut  [3] 进|出  -> 弹出2
 
 */

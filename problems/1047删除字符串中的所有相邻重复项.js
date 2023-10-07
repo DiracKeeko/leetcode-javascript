@@ -36,3 +36,16 @@ var removeDuplicates = function(s) {
     }
   }
 };
+
+var removeDuplicates = function(s) {
+  const stack = [];
+  for (const curStr of s) {
+    const prevStr = stack[stack.length - 1];
+    if (curStr === prevStr) {
+      stack.pop();
+    } else {
+      stack.push(curStr);
+    }
+  }
+  return stack.join("");
+};

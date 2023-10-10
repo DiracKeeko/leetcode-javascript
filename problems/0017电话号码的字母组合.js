@@ -51,13 +51,14 @@ var letterCombinations = function (digits) {
  */
 // ↓ 回溯思想
 var letterCombinations = function (digits) {
-  if (digits.length === 0) {
+  const len = digits.length;
+  if (len === 0) {
     // digits === ""的情况
     return [];
   }
   const arr = ["abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
 
-  if (digits.length === 1) {
+  if (len === 1) {
     return arr[digits].split("");
   }
 
@@ -73,6 +74,47 @@ var letterCombinations = function (digits) {
     }
 
     for (const char of arr[digits[i]]) {
+      path.push(char);
+      backtrack(digits, l, i + 1);
+      path.pop();
+    }
+  }
+};
+
+// ↓ 回溯思想 map 和 arr 在这个量级上的访问速度提升看不出来
+var letterCombinations = function (digits) {
+  const len = digits.length;
+  if (len === 0) {
+    // digits === ""的情况
+    return [];
+  }
+  const map = {
+    2: "abc",
+    3: "def",
+    4: "ghi",
+    5: "jkl",
+    6: "mno",
+    7: "pqrs",
+    8: "tuv",
+    9: "wxyz",
+  };
+
+  if (len === 1) {
+    return map[digits].split("");
+  }
+
+  let res = [];
+  let path = []; // 存储和弹出
+  backtrack(digits, len, 0);
+  return res;
+
+  function backtrack(digits, l, i) {
+    if (path.length === l) {
+      res.push(path.join(""));
+      return;
+    }
+
+    for (const char of map[digits[i]]) {
       path.push(char);
       backtrack(digits, l, i + 1);
       path.pop();

@@ -11,7 +11,7 @@
  * @param {string} digits
  * @return {string[]}
  */
-var letterCombinations = function(digits) {
+var letterCombinations = function (digits) {
   if (digits.length === 0) {
     // digits === ""的情况
     return [];
@@ -24,8 +24,8 @@ var letterCombinations = function(digits) {
     6: "mno",
     7: "pqrs",
     8: "tuv",
-    9: "wxyz"
-  }
+    9: "wxyz",
+  };
   function onceMore(letterArr, nextIndex) {
     if (nextIndex === digits.length) {
       return letterArr;
@@ -35,12 +35,47 @@ var letterCombinations = function(digits) {
     const nextLetterStr = map[nextNum];
     for (const curItem of letterArr) {
       for (const curLetter of nextLetterStr) {
-        res.push(curItem+curLetter);
+        res.push(curItem + curLetter);
       }
     }
     return onceMore(res, nextIndex + 1);
   }
-  
+
   const initArr = [""];
   return onceMore(initArr, 0);
+};
+
+/**
+ * @param {string} digits
+ * @return {string[]}
+ */
+// ↓ 回溯思想
+var letterCombinations = function (digits) {
+  if (digits.length === 0) {
+    // digits === ""的情况
+    return [];
+  }
+  const arr = ["abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
+
+  if (digits.length === 1) {
+    return arr[digits].split("");
+  }
+
+  let res = [];
+  let path = [];
+  backtrack(digits, len, 0);
+  return res;
+
+  function backtrack(digits, l, i) {
+    if (path.length === l) {
+      res.push(path.join(""));
+      return;
+    }
+
+    for (const char of arr[digits[i]]) {
+      path.push(char);
+      backtrack(digits, l, i + 1);
+      path.pop();
+    }
+  }
 };

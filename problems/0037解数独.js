@@ -70,44 +70,61 @@ var solveSudoku = function (board) {
 };
 
 function isLegal(board, row, col, k) {
-  // 判断行是否相同
-  for (let j = 0; j < 9; j++) {
-    if (board[row][j] === k) {
-      return false;
-    }
-  }
+  // // 判断行是否相同
+  // for (let j = 0; j < 9; j++) {
+  //   if (board[row][j] === k) {
+  //     return false;
+  //   }
+  // }
 
-  // 判断列是否相同
+  // // 判断列是否相同
+  // for (let i = 0; i < 9; i++) {
+  //   if (board[i][col] === k) {
+  //     return false;
+  //   }
+  // }
+
+  // 将上面两个判断一起进行， 少做一次for循环 (行&列一起判断)
   for (let i = 0; i < 9; i++) {
-    if (board[i][col] === k) {
+    if (board[row][i] === k || board[i][col] === k) {
       return false;
     }
   }
 
   // 判断是否在3x3格子里
-  const [rs, re] = getBound(row); // rowStart, rowEnd
-  const [cs, ce] = getBound(col); // colStart, colEnd
-  for (let i = rs; i <= re; i++) {
-    for (let j = cs; j <= ce; j++) {
-      if (board[i][j] === k) {
+  // const [rs, re] = getBound(row); // rowStart, rowEnd
+  // const [cs, ce] = getBound(col); // colStart, colEnd
+  // for (let i = rs; i <= re; i++) {
+  //   for (let j = cs; j <= ce; j++) {
+  //     if (board[i][j] === k) {
+  //       return false;
+  //     }
+  //   }
+  // }
+
+  // 判断是否在3x3格子里
+  const rowStart = parseInt(row / 3) * 3;
+  const colStart = parseInt(col / 3) * 3;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (board[rowStart + i][colStart + j] === k) {
         return false;
       }
     }
   }
-
   return true;
 }
 
-function getBound(numStr) {
-  const num = parseInt(numStr);
-  if (0 <= num && num <= 2) {
-    return [0, 2];
-  } else if (3 <= num && num <= 5) {
-    return [3, 5];
-  } else {
-    return [6, 8];
-  }
-}
+// function getBound(numStr) {
+//   const num = parseInt(numStr);
+//   if (0 <= num && num <= 2) {
+//     return [0, 2];
+//   } else if (3 <= num && num <= 5) {
+//     return [3, 5];
+//   } else {
+//     return [6, 8];
+//   }
+// }
 
 let board = [
   ["5", "3", ".", ".", "7", ".", ".", ".", "."],

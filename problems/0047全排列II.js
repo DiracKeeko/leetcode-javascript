@@ -10,9 +10,9 @@
  * @param {number[]} nums
  * @return {number[][]}
  */
-var permuteUnique = function(nums) {
+/* var permuteUnique = function (nums) {
   const numberToCountMap = {};
-  nums.forEach(item => {
+  nums.forEach((item) => {
     numberToCountMap[item] = numberToCountMap[item] || 0;
     numberToCountMap[item] += 1;
   });
@@ -34,7 +34,7 @@ var permuteUnique = function(nums) {
       const len = path.length;
       const str = path.join("");
       map[len] = map[len] || [];
-      
+
       if (isOverStep(path, numberToCountMap) || map[len].includes(str)) {
         path.pop();
         continue;
@@ -50,33 +50,53 @@ var permuteUnique = function(nums) {
 function isOverStep(arr, map) {
   // 判断arr中相同item的个数小于等于 map中同key对应的value的个数
   const curMap = {};
-  arr.forEach(item => {
+  arr.forEach((item) => {
     curMap[item] = curMap[item] || 0;
     curMap[item] += 1;
   });
-  
+
   for (let key in curMap) {
     if (curMap[key] > map[key]) {
       return true;
     }
   }
   return false;
-}
+} */
 
-let testCase = [1,1,2];
+// v02 优化
+var permuteUnique = function (nums) {
+  // 数字有重复，排列不能重复 => 先排序
+  nums.sort((a, b) => a - b);
+
+  const res = [];
+  const path = [];
+  backtrack([]);
+  return res;
+
+  function backtrack(used) {
+    if (path.length === nums.length) {
+      res.push([...path]);
+      return;
+    }
+
+    for (let i = 0; i < nums.length; i++) {
+      const num = nums[i];
+
+      if (nums[i] === nums[i - 1] && !used[i - 1]) {
+        continue;
+      }
+
+      if (!used[i]) {
+        used[i] = true;
+        path.push(num);
+        backtrack(used);
+        path.pop();
+        used[i] = false;
+      }
+    }
+  }
+};
+
+let testCase = [1, 1, 2];
 let res = permuteUnique(testCase);
-console.log({res});
-
-
-// function test() {
-//   const obj = {
-//     1: 1,
-//     2: 2,
-//     3: 3
-//   }
-//   for (const key in obj) {
-//     console.log("val->", obj[key]);
-//   }
-// }
-
-// test();
+console.log({ res });

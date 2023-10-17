@@ -65,7 +65,8 @@ function isOverStep(arr, map) {
 
 // v02 优化
 var permuteUnique = function (nums) {
-  // 数字有重复，排列不能重复 => 先排序
+  // 数字有重复，排列不能重复 => 先排序 
+  // (必须排序) 才方便进行树层去重 (树层级别的剪枝)
   nums.sort((a, b) => a - b);
 
   const res = [];
@@ -82,13 +83,14 @@ var permuteUnique = function (nums) {
     for (let i = 0; i < nums.length; i++) {
       const num = nums[i];
 
-      if (nums[i] === nums[i - 1] && !used[i - 1]) {
+      // used[i - 1] === false 说明是树层上的 (前一个没有用，回溯到这个分支)
+      if (nums[i] === nums[i - 1] && used[i - 1] === false) {
         continue;
       }
 
-      if (!used[i]) {
-        used[i] = true;
+      if (used[i] === false) {
         path.push(num);
+        used[i] = true;
         backtrack(used);
         path.pop();
         used[i] = false;

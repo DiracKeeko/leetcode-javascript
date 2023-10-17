@@ -49,14 +49,14 @@ var letterCombinations = function (digits) {
  * @param {string} digits
  * @return {string[]}
  */
-// ↓ 回溯思想
+// ↓ 回溯思想 --在这个量级用这个方案就可以了
 var letterCombinations = function (digits) {
   const len = digits.length;
   if (len === 0) {
     // digits === ""的情况
     return [];
   }
-  const arr = ["abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
+  const arr = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
 
   if (len === 1) {
     return arr[digits].split("");
@@ -64,18 +64,18 @@ var letterCombinations = function (digits) {
 
   let res = [];
   let path = [];
-  backtrack(digits, len, 0);
+  backtrack(0);
   return res;
 
-  function backtrack(digits, l, i) {
-    if (path.length === l) {
+  function backtrack(i) {
+    if (path.length === len) {
       res.push(path.join(""));
       return;
     }
 
     for (const char of arr[digits[i]]) {
       path.push(char);
-      backtrack(digits, l, i + 1);
+      backtrack(i + 1);
       path.pop();
     }
   }

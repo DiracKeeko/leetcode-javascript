@@ -88,7 +88,8 @@ var permuteUnique = function (nums) {
         continue;
       }
 
-      if (used[i] === false) {
+      // ↓ 这里不能用 used[i] === false 因为第一次使用的时候，这里是undefined
+      if (!used[i]) {
         path.push(num);
         used[i] = true;
         backtrack(used);

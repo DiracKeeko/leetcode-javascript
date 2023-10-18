@@ -23,21 +23,44 @@
  * @param {number[]} s
  * @return {number}
  */
-var findContentChildren = function(g, s) {
+// ↓ 用大饼干去满足胃口大的小孩
+var findContentChildren = function(g, sizeArr) {
   g.sort((a, b) => b - a);
-  s.sort((a, b) => b - a);
+  sizeArr.sort((a, b) => b - a);
   let res = 0;
-  let i = 0;
-  for (let j = 0; j < s.length; j++) {
-    if (i === g.length) {
+  let gi = 0;
+  let si = 0;
+  while (gi < g.length) {
+    // if (sizeArr[si] >= g[gi]) {
+    //   res += 1;
+    //   si += 1;
+    //   gi += 1;
+    // } else {
+    //   gi += 1;
+    // }
+    // 上面代码变为下面
+    if (sizeArr[si] >= g[gi]) {
+      res += 1;
+      si += 1;
+    }
+    gi += 1;
+  }
+  return res;
+};
+
+// ↓ 优先喂饱小胃口的小朋友
+var findContentChildren = function(g, sizeArr) {
+  g.sort((a, b) => a - b);
+  sizeArr.sort((a, b) => a - b);
+  let res = 0;
+  let gIndex = 0;
+  for (let i = 0; i < sizeArr.length; i++) {
+    if (gIndex === g.length) {
       break;
     }
-    if (s[j] >= g[i]) {
+    if (sizeArr[i] >= g[gIndex]) {
       res += 1;
-      i += 1;
-    } else {
-      j -= 1;
-      i += 1;
+      gIndex += 1;
     }
   }
   return res;

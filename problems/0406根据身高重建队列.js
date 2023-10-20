@@ -27,10 +27,10 @@
  * @return {number[][]}
  */
 
-// 猜想1 排序 -> 不行 
+// 猜想1 排序
 /* 
-先按 身高h排序一次 (身高从小到大)， 同身高h,则k小在前 ([4, 0] 和 [4, 1])
-再按 k排序一次，同k 则h小在前 
+先按 身高h排序一次 (身高从大到小)， 同身高h,则k小在前 ([4, 0] 和 [4, 1])
+再按 k调整一次，将后面元素按k，插入对应的k位置
 */
 
 // 猜想2 放置 (插入) 
@@ -76,4 +76,21 @@ var reconstructQueue = function(people) {
 
   return res;
 
+};
+
+
+// 猜想1和猜想2是同样的思路，猜想1是在实现上对猜想2的优化
+var reconstructQueue = function(people) {
+  people.sort(([ha, ka], [hb, kb]) => {
+    if (ha !== hb) {
+      return hb - ha; // h 从高到低
+    }
+    return ka - kb; // 同h k从小到大
+  })
+
+  const res = []
+  for (const person of people) {
+    res.splice(person[1], 0, person);
+  }
+  return res;
 };

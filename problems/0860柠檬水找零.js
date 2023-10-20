@@ -38,6 +38,7 @@
  * @param {number[]} bills
  * @return {boolean}
  */
+// 贪心 (优先保留更多的5, 优先消耗10)
 var lemonadeChange = function (bills) {
   let fiveNum = 0;
   let tenNum = 0;

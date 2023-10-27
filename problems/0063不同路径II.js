@@ -52,7 +52,7 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
   }
 
   isObstacle = false;
-  for (let i = 0; i< rowNum; i++) {
+  for (let i = 0; i < rowNum; i++) {
     if (isObstacle === false) {
       obstacleGrid[i][0] === 1 && (isObstacle = true);
     }
@@ -78,10 +78,36 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
   return dp[rowNum - 1][colNum - 1];
 };
 
+// ↓ 逻辑精简，易于理解。 执行效率没有上面版本高
+var uniquePathsWithObstacles = function (obstacleGrid) {
+  const r = obstacleGrid.length;
+  const c = obstacleGrid[0].length;
+
+  // 先全部填充 0
+  const dp = new Array(r).fill(0).map(() => new Array(c).fill(0)); // [[0, 0, ...], [0, 0, ...]]
+
+  for (let j = 0; j < c && obstacleGrid[0][j] === 0; j++) {
+    dp[0][j] = 1;
+  }
+
+  for (let i = 0; i < r && obstacleGrid[i][0] === 0; i++) {
+    dp[i][0] = 1;
+  }
+
+  for (let i = 1; i < r; i++) {
+    for (let j = 1; j < c; j++) {
+      dp[i][j] = obstacleGrid[i][j] === 1 ? 0 : dp[i - 1][j] + dp[i][j - 1];
+    }
+  }
+
+  console.log({ dp });
+  return dp[r - 1][c - 1];
+};
+
 const testCase = [
-  [0,0,0],
-  [1,0,0],
-  [0,0,0]
+  [0, 0, 0],
+  [0, 1, 0],
+  [0, 0, 0],
 ];
 const res = uniquePathsWithObstacles(testCase);
-console.log({res});
+console.log({ res });

@@ -15,7 +15,9 @@
   2. 确定递推公式
     dp[i] = dp[0]*dp[i-1] + dp[1]*d[i-2] + dp[2]*dp[i-3] + ... + d[i-3]*d[1] + dp[i-2]*dp[0]
 
-    dp[i] += dp[j] * dp[i - j - 1];
+    dp[i] += dp[j] * dp[i - j - 1];  (j = 0开始)
+
+    dp[i] += dp[j - 1] * dp[i - j];  (j = 1开始, j更有意义, 此时j是root节点值)
 
   3. dp数组如何初始化
     dp[0] = 1  空节点也是二叉搜索树
@@ -42,3 +44,18 @@ var numTrees = function(n) {
   }
   return dp[n];
 };
+
+// 下面这种写法 j 的含义更有现实意义
+var numTrees = function(n) {
+  const dp = new Array(n + 1).fill(0);
+  dp[0] = 1;
+
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= i; j++) {
+      dp[i] += dp[j - 1] * dp[i - j];
+    }
+  }
+  return dp[n];
+};
+
+numTrees(3);

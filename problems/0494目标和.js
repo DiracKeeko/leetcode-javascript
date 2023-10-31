@@ -145,7 +145,7 @@
  * @param {number} target
  * @return {number}
  */
-var findTargetSumWays = function(nums, target) {
+var findTargetSumWays = function (nums, target) {
   const len = nums.length;
   if (len === 1) {
     if (nums[0] === target || nums[0] === -target) {
@@ -166,18 +166,65 @@ var findTargetSumWays = function(nums, target) {
   const dp = Array(len)
     .fill(0)
     .map(() => Array(x + 1).fill(0));
+
+  // 初始化
   dp[0][nums[0]] = 1;
+  for (let i = 0; i < len; i++) {
+    dp[i][0] = 1;
+  }
 
   for (let i = 1; i < len; i++) {
-    for (let j = nums[i]; j <= x; j++) {
-      if (j === nums[i]) {
-        dp[i][j] = dp[i - 1][j] + 1;
-      } else {
-        dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]];
-      }
+    for (let j = 1; j <= x; j++) {
+      const topLeft =
+        dp[i - 1][j - nums[i]] === undefined ? 0 : dp[i - 1][j - nums[i]];
+      dp[i][j] = dp[i - 1][j] + topLeft;
     }
   }
+  console.table(dp);
   return dp[len - 1][x];
+};
+
+// 最基础的二维数组方法 https://www.bilibili.com/video/BV1g34y1u7Eu
+// dp[i][j]定义为从nums[0] -> nums[i]中取数进行加减，得到j的方法 的数量
+// dp[i][j] = dp[i-1][j-nums[i]] + dp[i-1][j+nums[i]];
+
+// 初始化dp[i][j]
+// 数组长度为 (nums的和) x 2 + 1
+
+// 数组第一行 dp[0][-nums[i]] 和 dp[0][nums[i]]
+var findTargetSumWays = function (nums, target) {
+  const sum = nums.reduce((a, b) => a + b, 0);
+  const dpLen = sum * 2 + 1;
+  const offset = sum;
+
+  const dp = Array(nums.length)
+    .fill(0)
+    .map(() => Array(dpLen).fill(0));
+  dp[0][offset - nums[0]] = 1;
+  dp[0][offset + nums[0]] = 1;
+
+  for (let i = 1; i < nums.length; i++) {
+    for (let j = 0; j < dpLen; j++) {
+      // if (offset + j - nums[i] < 0) {
+      //   dp[i][j] = dp[i - 1][offset + j + nums[i]];
+      // } else if (offset + j + nums[i] > dpLen - 1) {
+      //   dp[i][j] = dp[i - 1][offset + j - nums[i]];
+      // } else {
+      //   dp[i][j] = dp[i - 1][offset + j + nums[i]] + dp[i - 1][offset + j - nums[i]];
+      // }
+      const topLeft =
+        dp[i - 1][offset + j + nums[i]] === undefined
+          ? 0
+          : dp[i - 1][offset + j + nums[i]];
+      const topRight =
+        dp[i - 1][offset + j - nums[i]] === undefined
+          ? 0
+          : dp[i - 1][offset + j - nums[i]];
+      dp[i][j] = topLeft + topRight;
+    }
+  }
+  console.table(dp);
+  return dp[nums.length - 1][offset + target];
 };
 
 const nums = [1, 1, 1, 1, 1];

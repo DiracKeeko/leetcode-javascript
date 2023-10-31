@@ -65,3 +65,4 @@ dp五步
 kc0046携带研究材料(01背包)  (二维dp实现, 滚动数组实现)
 0416分割等和子集 (转化为背包的重点是 nums = weight = value)
 1049最后一块石头的重量II
+0494目标和 (背包 组合)  1.最基础的二维数组方法 https://www.bilibili.com/video/BV1g34y1u7Eu

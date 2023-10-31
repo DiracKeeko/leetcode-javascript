@@ -145,48 +145,38 @@
  * @param {number} target
  * @return {number}
  */
+
+// 正数和 => 二维dp数组解法
 var findTargetSumWays = function (nums, target) {
-  const len = nums.length;
-  if (len === 1) {
-    if (nums[0] === target || nums[0] === -target) {
-      return 1;
-    }
+  const sum = nums.reduce((a, c) => a + c, 0);
+  if (Math.abs(target) > sum) {
     return 0;
   }
-  const sum = nums.reduce((acc, cur) => acc + cur, 0);
+
   if ((sum + target) % 2 === 1) {
-    return 0; // 取不出一个整数，没有方案
-  }
-  if (target > sum) {
-    return 0; // target > sum 全都加起来也达不到sum，没有方案
+    return 0;
   }
 
-  const x = (sum + target) >> 1;
+  const x = ((sum + target)) >> 1;
 
-  const dp = Array(len)
-    .fill(0)
-    .map(() => Array(x + 1).fill(0));
-
-  // 初始化
-  dp[0][nums[0]] = 1;
-  for (let i = 0; i < len; i++) {
-    dp[i][0] = 1;
-  }
-
-  for (let i = 1; i < len; i++) {
-    for (let j = 1; j <= x; j++) {
-      const topLeft =
-        dp[i - 1][j - nums[i]] === undefined ? 0 : dp[i - 1][j - nums[i]];
-      dp[i][j] = dp[i - 1][j] + topLeft;
+  let dp = [[1]];
+  for (let i = 1; i <= nums.length; i++) { // 这里要注意，添加了第一行，是可以取到nums[nums.length]的
+    if (!dp[i]) dp[i] = [];
+    for (let j = 0; j <= x; j++) {
+      if (nums[i - 1] > j) {
+        dp[i][j] = dp[i - 1][j] || 0;
+      } else {
+        dp[i][j] = (dp[i - 1][j] || 0) + (dp[i - 1][j - nums[i - 1]] || 0); 
+        // 这种写法第一列，在nums[i] === 0 的时候初始化 就正常了
+      }
     }
   }
   console.table(dp);
-  return dp[len - 1][x];
+  return dp[nums.length][x];
 };
 
-
 // 最基础的二维数组方法 https://www.bilibili.com/video/BV1g34y1u7Eu
-// ↓ done 
+// ↓ done
 // dp[i][j]定义为从nums[0] -> nums[i]中取数进行加减，得到j的方法 的数量
 // dp[i][j] = dp[i-1][j-nums[i]] + dp[i-1][j+nums[i]];
 
@@ -194,7 +184,7 @@ var findTargetSumWays = function (nums, target) {
 // 数组长度为 (nums的和) x 2 + 1
 
 // 数组第一行 dp[0][-nums[i]] 和 dp[0][nums[i]]
-var findTargetSumWays = function (nums, target) {
+/* var findTargetSumWays = function (nums, target) {
   const sum = nums.reduce((a, b) => a + b, 0);
   if (Math.abs(target) > sum) {
     return 0;
@@ -232,10 +222,11 @@ var findTargetSumWays = function (nums, target) {
   }
   console.table(dp);
   return dp[nums.length - 1][offset + target];
-};
+}; */
 
-// const nums = [1, 1, 1, 1, 1];
-const nums = [0, 0, 0, 0, 1];
-const target = 1;
+const nums = [1,1,1,1,1];
+const target = 3;
+// const nums = [0, 0, 0, 0, 0, 0, 0, 0, 1];
+// const target = 1;
 const res = findTargetSumWays(nums, target);
 console.log("res->", res);

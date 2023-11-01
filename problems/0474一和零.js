@@ -16,7 +16,9 @@
 
 2. 确定递推公式
   最外层遍历物品，每个dp[i][j]都与自己比较
-  dp[i][j] = Math.max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1)
+  for (str of strs) {
+    dp[i][j] = Math.max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1)
+  }
 
 3. dp数组如何初始化
   row = m + 1, col = n + 1, 全部填充为0

@@ -1,11 +1,11 @@
-// https://kamacoder.com/problem.php?id=1046
+// https://kamacoder.com/problem.php?id=1052
 
-// 01背包问题
+// 完全背包问题
 
 /* 
   小明是一位科学家，他需要参加一场重要的国际科学大会，以展示自己的最新研究成果。他需要带一些研究材料，但是他的行李箱空间有限。这些研究材料包括实验设备、文献资料和实验样本等等，它们各自占据不同的空间，并且具有不同的价值。 
 
-  小明的行李空间为 N，问小明应该如何抉择，才能携带最大价值的研究材料，每种研究材料只能选择一次，并且只有选与不选两种选择，不能进行切割。
+  小明的行李空间为 N，问小明应该如何抉择，才能携带最大价值的研究材料，每种研究材料可以选择无数次，并且可以重复选择。
 */
 
 /* 
@@ -28,7 +28,7 @@
     6
   
   输出
-    5
+    30
 */
 
 /**
@@ -37,13 +37,14 @@
  * @param bagSize 背包的容量
  */
 
+
 /* 
   dp五步
   1. 确定dp数组（dp table）以及下标的含义
-    二维dp数组 dp[i][j] 表示从下标为[0-i]的物品里任意取，放进容量为j的背包，得到的价值总和最大值
+    二维dp数组 dp[i][j] 表示从下标为[0-i]的物品里任意取无数次，放进容量为j的背包，得到的价值总和最大值
 
   2. 确定递推公式
-    dp[i][j] = Math.max(dp[i-1][j], dp[i - 1][j - weight[i]] + value[i])
+    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - weight[i]] + value[i])
     
     dp[i][j] 有两种得到的方式
       一种是第i件物品超出剩余容量，无法放入。 此时 dp[i][j] = dp[i-1][j]
@@ -65,69 +66,43 @@
     先遍历物品更好理解。选择先遍历物品
 
   5. 举例推导dp数组
+    weight = [1, 1, 2];
+    value = [1, 2, 5];
+    size = 4
+
+    [
+      [0, 1, 2, 3, 4],
+      [0, 2, 4, 6, 8],
+      [0, 2, 5, 7, 10]
+    ]
 */
+
 
 // 二维dp数组实现
 function testWeightBagProblem(weight, value, size) {
   const len = weight.length;
-  const dp = new Array(len).fill(0).map(() => new Array(size + 1).fill(0)); // dp[i][j]全部初始化为0
-  for (let j = weight[0]; j <= size; j++) {
-    dp[0][j] = value[0];
-  }
+  const dp = Array(len + 1).fill(0).map(() => new Array(size + 1).fill(0)); // dp[i][j]全部初始化为0
 
-  for (let i = 1; i < len; i++) {
+  for (let i = 1; i <= len; i++) {
     for (let j = 1; j <= size; j++) {
-      if(j < weight[i]) {
+      if(j < weight[i - 1]) {
         dp[i][j] = dp[i - 1][j];
       } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - weight[i - 1]] + value[i - 1]);
       }
     }
   }
   console.table(dp);
-  return dp[len - 1][size];
+  return dp[len][size];
 }
 
+const weight = [1, 1, 2];
+const value = [1, 2, 5];
+const size = 4;
 /* 
 const weight = [2, 2, 3, 1, 5, 2];
 const value = [2, 3, 1, 5, 4, 3];
 const size = 6;
+ */
 const res = testWeightBagProblem(weight, value, size);
-console.log({res});
-*/
-
-// 一维dp数组实现 (滚动数组)
-/* 
-  1. 确定dp数组（dp table）以及下标的含义
-    dp[j] 是从下标为[0-i]的物品里任意取，放进容量为j的背包，得到的价值总和最大值
-
-  2. 确定递推公式
-    dp[j] = Math.max(dp[j - 1], dp[j - weight[i]] + value[i])
-
-  3. dp数组如何初始化
-    全部填充0
-
-  4. 确定遍历顺序
-    先遍历物品，再遍历背包容量。 背包容量需要从大到小 (保证在遍历每一个物品i时，每个物品i只放置一次)
-
-  5. 举例推导dp数组
-*/
-
-function testWeightBagProblem(weight, value, size) {
-  const dp = new Array(size + 1).fill(0);
-  const len = weight.length;
-
-  for (let i = 0; i < len; i++) {
-    for (let j = size; j >= weight[i]; j--) {
-      dp[j] = Math.max(dp[j - 1], dp[j - weight[i]] + value[i]);
-    }
-  }
-  console.log(dp);
-  return dp[size];
-}
-
-const weight = [2, 2, 3, 1, 5, 2];
-const value = [2, 3, 1, 5, 4, 3];
-const size = 6;
-const res = testWeightBagProblem(weight, value, size);
-console.log({res});
+console.log("res->", res);

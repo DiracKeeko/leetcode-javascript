@@ -47,21 +47,22 @@
     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - weight[i]] + value[i])
     
     dp[i][j] 有两种得到的方式
-      一种是第i件物品超出剩余容量，无法放入。 此时 dp[i][j] = dp[i-1][j]
-      一种是第i件物品恰好等于剩余容量，可以放入。 此时dp[i][j] = dp[i - i][j - weight[i]] + value[i]
+      一种是第i件物品超出剩余容量，无法放入。 此时 dp[i][j] = dp[i - 1][j]
+      一种是第i件物品恰好等于剩余容量，可以放入。 此时dp[i][j] = dp[i][j - weight[i]] + value[i]
       要取这两种情况的最大值
 
       此外还有一种情况，需要在程序里特殊处理。 -> 如果 j < weight[i], 则只能取 dp[i-i][j]
 
   3. dp数组如何初始化
-    i -> 物品序号
+    ix -> 物品序号
     j -> 背包容量
     
-    在背包容量j大于等于i=0的物品重量时，dp[0][j] = value[0];  -> 第一行初始化为 0，j >= weight[i]后面填充为value[0]
-    在背包容量j为0时，dp[i][j]都是0   -> 第一列初始化为0
+    增加额外的一行，首行，填充为0。
+    第i物品 = nums[ix - 1]
+    在背包容量j为0时，dp[ix][j]都是0   -> 第一列初始化为0
 
   4. 确定遍历顺序
-    两层for循环，先遍历物品 以及 先遍历背包容量都可以，因为dp[i][j]是由dp[i][j]的正上方和左上方推导得到。
+    两层for循环，先遍历物品 以及 先遍历背包容量都可以，因为dp[ix][j]是由dp[ix][j]的正上方和左侧dp[ix][j - nums[ix - 1]] + value[ix - 1]推导得到。
     
     先遍历物品更好理解。选择先遍历物品
 
@@ -83,17 +84,32 @@ function testWeightBagProblem(weight, value, size) {
   const len = weight.length;
   const dp = Array(len + 1).fill(0).map(() => new Array(size + 1).fill(0)); // dp[i][j]全部初始化为0
 
-  for (let i = 1; i <= len; i++) {
+  for (let ix = 1; ix <= len; ix++) {
     for (let j = 1; j <= size; j++) {
-      if(j < weight[i - 1]) {
-        dp[i][j] = dp[i - 1][j];
+      if(j < weight[ix - 1]) {
+        dp[ix][j] = dp[ix - 1][j];
       } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - weight[i - 1]] + value[i - 1]);
+        dp[ix][j] = Math.max(dp[ix - 1][j], dp[ix][j - weight[ix - 1]] + value[ix - 1]);
       }
     }
   }
   console.table(dp);
   return dp[len][size];
+}
+
+// 一维dp数组实现 (滚动数组实现)
+// dp[j] 容量为j的背包，在0-i之间任选，可以重复取，最大价值是dp[j]
+function testWeightBagProblem(weight, value, size) {
+  const len = weight.length;
+  const dp = Array(size + 1).fill(0);
+
+  for (let i = 0; i < len; i++) {
+    for (let j = weight[i]; j <= size; j++) {
+      dp[j] = Math.max(dp[j], dp[j - weight[i]] + value[i]);
+    }
+  }
+  console.log(dp);
+  return dp[size];
 }
 
 const weight = [1, 1, 2];

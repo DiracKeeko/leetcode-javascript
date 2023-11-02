@@ -66,7 +66,7 @@ var change = function(amount, coins) {
       // dp[ix][j] = dp[ix - 1][j] + dp[ix][j - coins[ix - 1]] || 0;
     }
   }
-  // console.table(dp);
+  console.table(dp);
   return dp[len][amount];
 };
 
@@ -81,9 +81,27 @@ var change = function(amount, coins) {
   // const res = change(amount, coins);
   // console.timeEnd("|| 0"); // 13.2ms 左右
 
-  结论: if判断比 ||0判断的效率要高，尽量用if来写
+  结论: if判断比 ||0判断的效率要高，二维dp数组中尽量用if来写
 */
 
+// 一维dp数组 (滚动数组解法)
+/* 
+  dp[j] 表示从coins[0, i]之间任取硬币，组成j的方案数量
+*/
+var change = function(amount, coins) {
+  const dp = Array(amount + 1).fill(0);
+  dp[0] = 1;
+
+  for (let i = 0; i < coins.length; i++) {
+    for (let j = 1; j <= amount; j++) {
+      if (j >= coins[i]) {
+        dp[j] = dp[j] + dp[j - coins[i]]
+      }
+    }
+  }
+  console.log({dp});
+  return dp[amount]
+};
 
 const amount = 5, coins = [1,2,5];
 const res = change(amount, coins);

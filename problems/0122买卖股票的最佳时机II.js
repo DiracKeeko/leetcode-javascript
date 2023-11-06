@@ -25,10 +25,48 @@
      总利润为 4 。
  */
 
+     
+/* 
+1. 确定dp数组（dp table）以及下标的含义
+  dp[i][0] 在第i天，不持有股票的最多现金
+  dp[i][1] 在第i天，持有股票的最多现金
+
+2. 确定递推公式
+  dp[i][0] = Math.max(dp[i-1][1] + prices[i], dp[i-1][0])
+  第i天不持有股票
+    第i-1天持有，第i天卖出  => dp[i-1][1] + prices[i]
+    第i-1天不持有 => dp[i-1][0]
+
+  dp[i][1] = Math.max(dp[i-1][1], -prices[i])
+  第i天持有股票
+    第i-1天持有 dp[i-1][1]
+    第i-1天不持有 dp[i-1][0] - prices[i]
+
+3. dp数组如何初始化
+  dp[0][0] = 0;
+  dp[0][1] = -prices[0];
+
+4. 确定遍历顺序
+  一层for循环，从前到后
+
+5. 举例推导dp数组
+*/
+
 /**
  * @param {number[]} prices
  * @return {number}
  */
+// 动态规划解法
+var maxProfit = function(prices) {
+  const dp = [[0, -prices[0]]];
+
+  for (let i = 1; i < prices.length; i++) {
+    dp[i] = [];
+    dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+    dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+  }
+  return dp[prices.length - 1][0];
+}
 
 // maxArr[i] 表示第i天能够获得的最大利润
 var maxProfit = function(prices) {

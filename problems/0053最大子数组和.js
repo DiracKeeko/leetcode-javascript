@@ -35,8 +35,8 @@ var maxSubArray = function(nums) {
 };
 
 
-// 贪心
-// sumMaxArr 每个位置都是前i个位置的最大和
+// 贪心思路
+// sumMaxArr[i] 是[0, i]位置任取连续子数组的最大和
 // 返回sumMaxArr的最大值
 var maxSubArray = function(nums) {
   const sumMaxArr = [nums[0]];
@@ -45,8 +45,31 @@ var maxSubArray = function(nums) {
     const preMax = sumMaxArr[i - 1] > 0 ? sumMaxArr[i - 1] : 0;
     sumMaxArr[i] = preMax + nums[i];
   }
-
+  console.log(sumMaxArr);
   return Math.max(...sumMaxArr);
+}
+
+
+// 动态规划思路
+/* 
+1、dp[i] 是[0, i]位置任取连续子数组的最大和
+
+2、dp[i] = Math.max(dp[i - 1] + nums[i], nums[i])
+  dp[i]有两种方式可以推得: 1.当前nums[i]加入连续子数组; 2.当前nums[i]不加入前面的子数组，而是从头开始
+
+3、dp[0] = nums[0]
+
+4、一层for循环，从前到后
+*/
+// 返回sumMaxArr的最大值
+var maxSubArray = function(nums) {
+  const dp = [nums[0]];
+
+  for (let i = 1; i < nums.length; i++) {
+    dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
+  }
+  // console.log(dp);
+  return Math.max(...dp);
 }
 
 const test = [-2,1,-3,4,-1,2,1,-5,4];

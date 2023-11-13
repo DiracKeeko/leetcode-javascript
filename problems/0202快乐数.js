@@ -49,3 +49,26 @@ var isHappy = function(n) {
     return sum;
   }
 };
+
+// 类比成一个循环链表
+var isHappy = function(n) {
+  let fast = getNum(getNum(n)); // 不能初始化为n, 否则输入n = 10结果就有问题
+  let slow = getNum(n);
+  while (fast !== 1 && slow !== 1) {
+    fast = getNum(getNum(fast));
+    slow = getNum(slow);
+    if (fast === slow) {
+      return false;
+    }
+  }
+  return true;
+  
+  function getNum(n) {
+    let sum = 0;
+    while(n) {
+      sum += (n % 10) ** 2;
+      n = parseInt(n / 10);
+    }
+    return sum;
+  }
+};

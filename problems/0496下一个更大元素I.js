@@ -47,3 +47,49 @@ var nextGreaterElement = function(nums1, nums2) {
   const finalRes = nums1.map(item => res[nums2.indexOf(item)]);
   return finalRes;
 };
+
+// v2 用map来存储单调栈的结果
+var nextGreaterElement = function(nums1, nums2) {
+  const map = {};
+  const stack = [0];
+  for (let i = 1; i < nums2.length; i++) {
+    let topIndex = stack[stack.length - 1];
+    if (nums2[i] > nums2[topIndex]) {
+      while (stack.length && nums2[i] > nums2[topIndex]) {
+        map[nums2[topIndex]] = nums2[i];
+        stack.pop();
+        topIndex = stack[stack.length - 1];
+      }
+      stack.push(i);
+    } else {
+      stack.push(i);
+    }
+  }
+  
+  const finalRes = nums1.map(item => map[item] || -1);
+  return finalRes;
+};
+
+// v3 在v2的基础上极度精简代码，实测多次提交 v3的执行效率最高
+var nextGreaterElement = function (nums1, nums2) {
+  const map = {};
+  const stack = [0];
+  for (let i = 1; i < nums2.length; i++) {
+    while (stack.length && nums2[i] > nums2[stack[stack.length - 1]]) {
+      const topIndex = stack.pop();
+      map[nums2[topIndex]] = nums2[i];
+    }
+    stack.push(i);
+  }
+
+  const finalRes = nums1.map((item) => map[item] || -1);
+  return finalRes;
+};
+
+/* 
+v3
+  Accepted
+    16/16 cases passed (56 ms)
+    Your runtime beats 97.68 % of javascript submissions
+    Your memory usage beats 44.27 % of javascript submissions (43.2 MB)
+*/

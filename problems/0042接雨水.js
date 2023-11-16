@@ -83,3 +83,52 @@ v2
 Your runtime beats 64.89 % of javascript submissions
 Your memory usage beats 24.87 % of javascript submissions (44.6 MB)
 */
+
+// v3 单调栈
+// 单调栈的解法是横向(一层一层的)计算雨水体积。
+/* 
+  单调栈存放height的下标
+  单调栈为递增栈(height[i]从top到bottom单调增加)，分为三种情况
+
+  1、height[i] < height[(stack.top()]    入栈 stack.push(i)
+  2、height[i] === height[stack.top()]  先弹出，再将新的i入栈 stack.pop(); stack.push(i);
+  3、height[i] > height[stack.top()]    计算雨水的体积
+*/
+var trap = function(height) {
+  let sum = 0;
+  const stack = [0];
+  for (let i = 1; i < height.length; i++) {
+    let topIndex = stack[stack.length - 1];
+    const curH = height[i];
+    if (curH < height[topIndex]) {
+      stack.push(i);
+    } else if (curH === height[topIndex]) {
+      stack.pop();
+      stack.push(i);
+    } else {
+      // height[i] > height[topIndex]
+      while (stack.length && curH > height[topIndex]) {
+        const bottomH = height[stack.pop()];
+        topIndex = stack[stack.length - 1];
+        if (stack.length) { 
+          // 这里还有个特殊情况，如果凹槽底部找到了，但是左边没有柱子了，就不做计算。
+          const leftH = height[topIndex];
+          const h = Math.min(leftH, curH) - bottomH;
+          const w = i - topIndex - 1;
+          sum += h * w;
+        }
+      }
+      stack.push(i);
+    }
+    console.log({i, sum});
+  }
+  return sum;
+};
+/* 
+v3
+322/322 cases passed (60 ms)
+Your runtime beats 95.17 % of javascript submissions
+Your memory usage beats 54.3 % of javascript submissions (43.4 MB)
+*/
+const test = [0,1,0,2,1,0,1,3,2,1,2,1];
+const res = trap(test);

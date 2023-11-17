@@ -109,3 +109,40 @@ Your runtime beats 7.29 % of javascript submissions
 Your memory usage beats 89.91 % of javascript submissions (52.1 MB)
 */
 
+// v3 单调栈 top -> bottom 单调递减
+var largestRectangleArea = function(heights) {
+  const hArr = [0, ...heights, 0]; // 首、尾 填充 0
+  const size = hArr.length;
+  const stack = [0];
+  let max = 0;
+
+  for (let i = 1; i < size; i++) {
+    const curH = hArr[i];
+    let topIndex = stack[stack.length - 1];
+    if (curH > hArr[topIndex]) {
+      stack.push(i);
+    } else if (curH === hArr[topIndex]) {
+      stack.pop();
+      stack.push(i);
+    } else {
+      while (stack.length && curH < hArr[topIndex]) {
+        const midH = hArr[stack.pop()];
+        topIndex = stack[stack.length - 1];
+        const leftIndex = topIndex;
+        const w = i - leftIndex - 1;
+        const s = w * midH;
+        max = Math.max(s, max);
+      }
+      stack.push(i);
+    }
+  }
+  return max;
+}
+
+/* 
+v3
+Accepted
+98/98 cases passed (96 ms)
+Your runtime beats 71.78 % of javascript submissions
+Your memory usage beats 57.95 % of javascript submissions (55.8 MB)
+*/

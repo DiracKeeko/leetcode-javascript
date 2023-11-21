@@ -38,12 +38,20 @@ var fourSum = function(nums, target) {
       return;
     }
 
+    // 剪枝逻辑
+    // size - index < count 则肯定不可能找到足够count数量的数字，直接剪掉
     if (size - index < count) {
       return;
     }
+    
+    // [1, 2, 2, 3, 7], index = 1, count = 3, target = 5; (5 < 3 * 2)
+    // 从[2, 2, 3, 7]这个部分用3个数凑出一个 targe = 5, 做不到
     if (target < count * nums[index]) {
       return;
     }
+    
+    // [1, 2, 2, 3, 7], index = 0, count = 4, target = 30; (36 > 4 * 7)
+    // 从[1, 2, 2, 3, 7]这个部分用4个数凑出一个 targe = 36, 做不到
     if (target > count * nums[size - 1]) {
       return;
     }

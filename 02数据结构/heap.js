@@ -92,14 +92,28 @@ class Heap {
 }
 
 // 创建堆时传入一个compare函数 决定这个堆是大顶堆还是小顶堆
-let heap = new Heap((a, b) => a > b); // 大顶堆
-// let heapSmallTop = new Heap((a, b) => b < a); // 小顶堆
+// let heap = new Heap((a, b) => a > b); // 大顶堆
+// heap.push(3);
+// heap.push(1);
+// heap.push(2);
+// heap.push(4);
+// console.log({heap});
+// console.log("heap.top->", heap.top());
+// console.log("heap.pop->", heap.pop());
+// console.log({heap});
 
-heap.push(3);
-heap.push(1);
-heap.push(2);
-heap.push(4);
-console.log({heap});
-console.log("heap.top->", heap.top());
-console.log("heap.pop->", heap.pop());
-console.log({heap});
+const smallTopHeap = new Heap((a, b) => a < b); // 小顶堆
+smallTopHeap.push(3);
+smallTopHeap.push(1);
+smallTopHeap.push(2);
+smallTopHeap.push(4);
+console.log({smallTopHeap});
+console.log("smallTopHeap.top->", smallTopHeap.top());
+console.log("smallTopHeap.pop->", smallTopHeap.pop());
+console.log({smallTopHeap});
+
+/* 
+  特点：
+    1、插入 和 删除 操作都是log2(n)的复杂度。
+    2、随时可以获取堆中的最大值和最小值。
+*/

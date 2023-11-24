@@ -111,6 +111,8 @@ console.log({smallTopHeap});
 console.log("smallTopHeap.top->", smallTopHeap.top());
 console.log("smallTopHeap.pop->", smallTopHeap.pop());
 console.log({smallTopHeap});
+console.log("smallTopHeap.pop->", smallTopHeap.pop());
+console.log({smallTopHeap});
 
 /* 
   特点：

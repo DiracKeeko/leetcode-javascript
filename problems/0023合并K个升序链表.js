@@ -49,3 +49,38 @@ v1
 v1 并不是这题要考察的方向，是取巧
  */
 
+// v2
+var mergeKLists = function(lists) {
+  if (lists.length === 0) {
+    return null;
+  }
+  return mergeLists(lists, 0, lists.length - 1);
+}
+
+function mergeLists(lists, start, end) {
+  // 归并排序的思路，递归拆分，最终每次进行mergeTwoLists
+  if (start === end) {
+    return lists[start];
+  }
+  const mid = start + ((end - start) >> 1);
+  const leftList = mergeLists(lists, start, mid);
+  const rightList = mergeLists(lists, mid + 1, end);
+  return mergeTwoLists(leftList, rightList);
+}
+
+function mergeTwoLists (list1, list2) {
+  const dummy = new ListNode();
+  let cur = dummy;
+  while (list1 && list2) {
+    if (list1.val < list2.val) {
+      cur.next = list1;
+      list1 = list1.next;
+    } else {
+      cur.next = list2;
+      list2 = list2.next;
+    }
+    cur = cur.next;
+  }
+  cur.next = list1 || list2;
+  return dummy.next;
+}

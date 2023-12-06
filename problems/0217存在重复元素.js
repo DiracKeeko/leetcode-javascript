@@ -58,3 +58,13 @@ Your runtime beats 83.4 % of javascript submissions
 Your memory usage beats 57.65 % of javascript submissions (53.6 MB)
 */
 
+// v4 优化空间复杂度  (代价是时间复杂度降低)
+var containsDuplicate = function(nums) {
+  nums.sort((a, b) => a - b);
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] === nums[i - 1]) {
+      return true;
+    }
+  }
+  return false;
+};

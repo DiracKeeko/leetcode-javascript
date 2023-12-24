@@ -42,6 +42,27 @@ console.log(instance1 === instance2); // true，这两个实例是同一个实�
 
 console.log("=====End=====");
 
+/*
+// ES5写法
+var Singleton = function() {
+  // 私有构造函数，确保不能直接实例化
+  if (!Singleton.instance) {
+    // 只有在实例不存在时才创建实例
+    this.data = []; // 这里可以存储需要共享的数据
+    Singleton.instance = this;
+  }
+  return Singleton.instance;
+};
+
+Singleton.getInstance = function() {
+  // 提供访问实例的静态方法
+  if (!Singleton.instance) {
+    Singleton.instance = new Singleton();
+  }
+  return Singleton.instance;
+};
+*/
+
 
 class SingletonB {
   constructor() {

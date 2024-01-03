@@ -2,6 +2,13 @@
  * [4] 寻找两个正序数组的中位数
  */
 
+/* 
+  给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。
+  请你找出并返回这两个正序数组的 中位数 。
+  
+  算法的时间复杂度应该为 O(log (m+n))
+*/
+
 /**
  * @param {number[]} nums1
  * @param {number[]} nums2
@@ -83,35 +90,36 @@ var findMedianSortedArrays = function (nums1, nums2) {
 
   /**
     @param  {array} arr1 被寻找的第一个数组
-    @param  {number} ind1 第一个数组的起始下标 
+    @param  {number} i1 第一个数组的起始下标 
     @param  {array} arr2 被寻找的第二个数组
-    @param  {number} ind2 第二个数组的起始下标 
+    @param  {number} i2 第二个数组的起始下标 
     @param  {number} k 要寻找的是第k小值
     @return {number} 找到的第k小值
    */
 
-  // getNum -> 从arr1的ind1位置开始 和 arr2的ind2位置开始 找第k小的元素
-  function getNum(arr1, ind1, arr2, ind2, k) {
+  // getNum -> 从arr1的i1位置开始 和 arr2的i2位置开始 找第k小的元素
+  function getNum(arr1, i1, arr2, i2, k) {
     // 某个数组空了，剩下的个数取另一个没空的数组的值
-    if (ind1 === arr1.length) return arr2[ind2 + k - 1];
-    if (ind2 === arr2.length) return arr1[ind1 + k - 1];
-    // 还差一步，返回当前两个值中的最小值
-    if (k === 1) return Math.min(arr1[ind1], arr2[ind2]);
+    if (i1 === arr1.length) return arr2[i2 + k - 1];
+    if (i2 === arr2.length) return arr1[i1 + k - 1];
+    // 还差一步，返回当前两个值中的最小值 
+    // 要注意，这里 上面两个if 要在 if(k === 1)前面
+    if (k === 1) return Math.min(arr1[i1], arr2[i2]);
 
-    // 从第一个数组的ind1位置开始，尝试向后走k/2距离，如果数组长度不足k/2，则走到数组末尾
-    let step1 = Math.min(k >> 1, arr1.length - ind1);
+    // 从第一个数组的i1位置开始，尝试向后走k/2距离，如果数组长度不足k/2，则走到数组末尾
+    let step1 = Math.min(k >> 1, arr1.length - i1);
 
     // 第二个数组尝试向后走k-第一个数组走的距离，如果不够，走到数组末尾
-    const step2 = Math.min(k - step1, arr2.length - ind2);
+    const step2 = Math.min(k - step1, arr2.length - i2);
     // 再用step2倒推一下step1
     step1 = k - step2;
 
-    // 满足下面的if 说明 arr1[ind1+step1] 之前的元素可以排除
-    if (arr1[ind1 + step1 - 1] < arr2[ind2 + step2 - 1]) {
-      return getNum(arr1, ind1 + step1, arr2, ind2, k - step1);
+    // 满足下面的if 说明 arr1[i1+step1] 之前的元素可以排除
+    if (arr1[i1 + step1 - 1] < arr2[i2 + step2 - 1]) {
+      return getNum(arr1, i1 + step1, arr2, i2, k - step1);
     }
-    // 反之 arr2[ind2+step2] 之前的元素可以排除
-    return getNum(arr1, ind1, arr2, ind2 + step2, k - step2);
+    // 反之 arr2[i2+step2] 之前的元素可以排除
+    return getNum(arr1, i1, arr2, i2 + step2, k - step2);
   }
 };
 

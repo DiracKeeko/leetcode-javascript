@@ -27,3 +27,15 @@ var reverseList = function(head) {
   }
   return sentry.next;
 };
+
+// 上下是两种不同的实现
+var reverseList = function(head) {
+  const dummy = new ListNode(); // 关键点在于不能 new ListNode(0, head); 这个会给自己找麻烦
+  while (head) {
+    const headNext = head.next;
+    head.next = dummy.next;
+    dummy.next = head;
+    head = headNext;
+  }
+  return dummy.next;
+};

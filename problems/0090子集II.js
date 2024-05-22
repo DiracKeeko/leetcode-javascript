@@ -46,6 +46,30 @@ var subsetsWithDup = function(nums) {
   }
 };
 
+// 不借助usedArr来实现
+var subsetsWithDup = function(nums) {
+  nums.sort((a, b) => a - b);
+  const res = [];
+  const path = [];
+  backtrack(0);
+  return res;
+
+  function backtrack(index) {
+    res.push([...path]);
+
+    for (let i = index; i < nums.length; i++) {
+      // i === index -> 第一次进入，一定允许; nums[i] !== nums[i - 1] ->没有使用过的一定允许
+      if (i === index || nums[i] !== nums[i - 1]) {
+        path.push(nums[i]);
+        backtrack(i + 1);
+        path.pop();
+      }
+
+      // 其他情况都跳过
+    }
+  }
+};
+
 const test = [1, 2, 2];
 const res = subsetsWithDup(test);
 console.log({res});

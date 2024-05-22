@@ -68,6 +68,35 @@ var combinationSum2 = function(candidates, target) {
   }
 };
 
+// 更精简的实现
+var combinationSum2 = function(candidates, target) {
+  candidates.sort((a, b) => a - b);
+  const res = [];
+  const path = [];
+  backtrack(0);
+  return res;
+
+  function backtrack(index) {
+    const sum = path.reduce((a, b) => a + b, 0);
+    if (sum === target) {
+      res.push([...path]);
+      return;
+    }
+
+    if (sum > target) {
+      return;
+    }
+
+    for (let i = index; i < candidates.length; i++) {
+      if (i === index || candidates[i] !== candidates[i - 1]) {
+        path.push(candidates[i]);
+        backtrack(i + 1);
+        path.pop();
+      }
+    }
+  }
+};
+
 const candidates = [1, 2, 2, 2, 5];
 const target = 5
 res = combinationSum2(candidates, target);

@@ -76,5 +76,70 @@ var solveNQueens = function (n) {
   }
 };
 
+// 2024年5月23日14:21:00 第二遍做题自行解出
+// n皇后的难度不算大，只是复杂。 要写transform 和 isLegal逻辑
+/* 
+Your runtime beats 90.22 % of javascript submissions
+Your memory usage beats 91.62 % of javascript submissions (52.2 MB)
+*/
+var solveNQueens = function(n) {
+  const res = [];
+  const path = []; 
+  // 示例: n = 4, path = [1, 3, 0, 2] 表示第一行Q放在index=1的位置，第二行放在index=3的位置, ...
+  // 最后还需要一个path转字符串的方法，将[1, 3, 0, 2]转成 [".Q..","...Q","Q...","..Q."]
+  backtrack(0);
+  return res;
+
+  function backtrack(count) {
+    if (count === n) {
+      res.push(transform(path));
+      return;
+    }
+
+    for (let i = 0; i < n; i++) {
+      path.push(i);
+      if (isLegal(path)) {
+        backtrack(count + 1);
+      }
+      path.pop();
+    }
+  }
+
+  function isLegal(arr) {
+    if (arr.length === 1) {
+      return true;
+    }
+
+    // 每次都只查arr的最后一个
+    const lastRow = arr.length - 1;
+    const lastCol = arr[lastRow];
+
+    for (let i = 0; i < arr.length - 1; i++) {
+      const curRow = i;
+      const curCol = arr[i];
+      if (lastCol === curCol) {
+        // 同一列 返回false
+        return false;
+      }
+      const diffRow = lastRow - curRow;
+      const diffCol = lastCol - curCol;
+      if (diffRow === diffCol || diffRow === -diffCol) {
+        // 在同一条斜线，返回false
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  function transform(arr) {
+    return arr.map((place) => {
+      const pointArr = new Array(n).fill(".");
+      pointArr[place] = "Q";
+      return pointArr.join("");
+    })
+  }
+};
+
 let res = solveNQueens(4);
 console.log({ res });

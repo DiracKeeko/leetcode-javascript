@@ -100,6 +100,57 @@ var permuteUnique = function (nums) {
   }
 };
 
+// 直接给出全量 usedArr
+var permuteUnique = function(nums) {
+  nums.sort((a, b) => a - b);
+  const usedArr = new Array(nums.length).fill(false);
+
+  const res = [];
+  const path = [];
+  backtrack(usedArr);
+  return res;
+
+  function backtrack(usedArr) {
+    if (path.length === nums.length) {
+      res.push([...path]);
+      return;
+    }
+
+    for (let i = 0; i < nums.length; i++) {
+      // 处理同一层的逻辑 (同层级的剪枝逻辑)
+      if (nums[i] === nums[i - 1] && usedArr[i - 1] === false) {
+        continue;
+      }
+
+      // 处理下一层的逻辑，下一层不关注是否与前一个数相等，只关注是否使用
+      /* 
+      // 省略了 usedArr[i] === true
+      if (usedArr[i] === true) {
+        continue;
+      }
+       */
+      if (usedArr[i] === false) {
+        usedArr[i] = true;
+        path.push(nums[i]);
+        backtrack(usedArr);
+        usedArr[i] = false;
+        path.pop();
+      }
+    }
+  }
+
+};
+
 let testCase = [1, 1, 2];
 let res = permuteUnique(testCase);
 console.log({ res });
+
+
+/* 
+const curL = [1, 1, 1, 2];
+const used = [0, 0, 0, 0];
+
+下一层 (第二层) 有两个分支
+const curL = [1, 1, 1, 2];  |  const curL = [1, 1, 1, 2];
+const used = [1, 0, 0, 0];  |  const used = [0, 0, 0, 1];
+*/

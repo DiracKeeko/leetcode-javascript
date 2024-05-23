@@ -14,6 +14,7 @@
  * @return {ListNode}
  */
 var removeElements = function(head, val) {
+  // const dummy = new ListNode(0, head); // 虚拟节点的名字用dummy
   const newHead = new ListNode(0, head);
   let curNode = newHead;
   while(curNode.next) {

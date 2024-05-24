@@ -34,3 +34,26 @@ var getIntersectionNode = function(headA, headB) {
   }
   return null;
 };
+
+// 数组也可以 
+// 查看提交结果，用集合set的执行时间，要远小于用数组Arr
+// 判定复杂对象，用Set()  set.add(); set.has()
+// 题干只要求保持链表结构，因此不需要使用curA
+var getIntersectionNode = function(headA, headB) {
+  const arr = [];
+  let curA = headA; // 不需要使用curA, curB
+  while (curA) {
+    arr.push(curA);
+    curA = curA.next;
+  }
+  
+  let curB = headB;
+  while (curB) {
+    if (arr.includes(curB)) {
+      return curB;
+    }
+    curB = curB.next;
+  }
+
+  return null;
+};

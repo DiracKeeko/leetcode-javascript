@@ -19,28 +19,13 @@
  * @return {ListNode}
  */
 var detectCycle = function(head) {
-  if (!head) {
-    return null;
-  }
-
-  let fast = head;
-  let slow = head;
-  while (fast) {
-    slow = slow.next;
-    if (fast.next) {
-      fast = fast.next.next;
-    } else {
-      return null;
+  const s = new Set();
+  while (head) {
+    if (s.has(head)) {
+      return head;
     }
-
-    if (fast === slow) {
-      let cur = head;
-      while (cur !== slow) {
-        cur = cur.next;
-        slow = slow.next;
-      }
-      return cur;
-    }
+    s.add(head);
+    head = head.next;
   }
   return null;
 };

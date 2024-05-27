@@ -49,3 +49,34 @@ var isPalindrome = function(head) {
   }
   return true;
 };
+
+// 这是第二次写的，没有第一次写的清爽
+var isPalindrome = function(head) {
+  let fast = head;
+  let slow = head;
+  const dummy = new ListNode();
+  while (fast && fast.next) {
+    const nextNode = dummy.next;
+    const addNode = slow;
+
+    fast = fast.next.next;
+    slow = slow.next;
+    
+    dummy.next = addNode;
+    addNode.next = nextNode;
+  }
+
+  if (fast) {
+    slow = slow.next;
+  }
+
+  let start = dummy.next;
+  while (slow) {
+    if (slow.val !== start.val) {
+      return false;
+    }
+    slow = slow.next;
+    start = start.next;
+  }
+  return true;
+};

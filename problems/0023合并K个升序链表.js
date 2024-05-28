@@ -60,9 +60,9 @@ var mergeKLists = function(lists) {
 function mergeLists(lists, start, end) {
   // 归并排序的思路，递归拆分，最终每次进行mergeTwoLists
   if (start === end) {
-    return lists[start];
+    return lists[start]; // 原子项，拆分的最终结果。也是递归的起点。
   }
-  const mid = start + ((end - start) >> 1);
+  const mid = start + ((end - start) >> 1); // 这里不用 (start + end) >> 1
   const leftList = mergeLists(lists, start, mid);
   const rightList = mergeLists(lists, mid + 1, end);
   return mergeTwoLists(leftList, rightList);
@@ -82,5 +82,23 @@ function mergeTwoLists (list1, list2) {
     cur = cur.next;
   }
   cur.next = list1 || list2;
+  return dummy.next;
+}
+
+// v3 最纯正的方式，但是会超时，一个用例都过不了。
+var mergeKLists = function(lists) {
+  const dummy = new ListNode();
+  let head = dummy;
+  while (lists.some(head => head !== null)) {
+    let minNode = new ListNode(Infinity);
+    for (const first of lists) {
+      if (first && first.val < minNode.val) {
+        minNode = first;
+      }
+    }
+    head.next = minNode;
+    minNode = minNode.next;
+    head = head.next;
+  }
   return dummy.next;
 }

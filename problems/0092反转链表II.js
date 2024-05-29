@@ -29,6 +29,7 @@
  * @return {ListNode}
  */
 
+// ↓ 第2版实现  优先看第3版实现
 var reverseBetween = function (head, left, right) {
   let dummy = new ListNode();
   dummy.next = head;
@@ -54,7 +55,7 @@ var reverseBetween = function (head, left, right) {
   return dummy.next;
 }
 
-// ↓ 第一版实现
+// ↓ 第1版实现
 var reverseBetweenFirstVersion = function (head, left, right) {
   let sentry = new ListNode();
   sentry.next = head;
@@ -93,4 +94,39 @@ var reverseBetweenFirstVersion = function (head, left, right) {
   tailNode.next = breakNextNode;
 
   return sentry.next;
+};
+
+// 第3版实现 优先看这个
+// 固定pin, 调整 left 后面的节点
+/* 
+ pin
+  1 2 3 4 5
+    
+     cur      cur的位置就是left位置
+  1 3 2 4 5
+
+       cur    cur不需要做 cur = cur.next操作
+  1 4 3 2 5
+*/
+var reverseBetween = function(head, left, right) {
+  const dummy = new ListNode(0, head);
+  let cur = dummy;
+
+  let preCount = left - 1;
+  while (preCount) {
+    cur = cur.next;
+    preCount -= 1;
+  }
+  const pin = cur; // 钉住头位置
+  cur = cur.next; // 移动到开始位置 left位置
+
+  let reverseCount = right - left;
+  while (reverseCount) {
+    const pinNext = pin.next;
+    pin.next = cur.next;
+    cur.next = cur.next.next;
+    pin.next.next = pinNext;
+    reverseCount -= 1;
+  }
+  return dummy.next;
 };

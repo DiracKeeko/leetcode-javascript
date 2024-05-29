@@ -1,7 +1,4 @@
 /*
- * @lc app=leetcode.cn id=145 lang=javascript
- * @lcpr version=21909
- *
  * [145] 二叉树的后序遍历
  */
 

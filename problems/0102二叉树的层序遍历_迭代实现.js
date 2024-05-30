@@ -18,6 +18,57 @@
  * @return {number[][]}
  */
 
+// v final
+var levelOrder = function(root) {
+  if (!root) {
+    return [];
+  }
+
+  const res = [];
+  let cur = [root];
+
+  while (cur.length) {
+    const next = [];
+    const levelRes = [];
+    for (const node of cur) {
+      levelRes.push(node.val);
+      node.left && next.push(node.left);
+      node.right && next.push(node.right);
+    }
+    res.push(levelRes);
+    cur = next;
+  }
+  return res;
+};
+
+// v3
+var levelOrder = function(root) {
+  if (!root) {
+    return [];
+  }
+
+  const res = [];
+  let cur = [root];
+  let next = [];
+
+  while (cur.length || next.length) {
+    if (!cur.length) {
+      cur = next;
+      next = [];
+    }
+    const levelRes = [];
+    for (const node of cur) {
+      levelRes.push(node.val);
+      node.left && next.push(node.left);
+      node.right && next.push(node.right);
+    }
+    res.push(levelRes);
+    cur = [];
+  }
+  return res;
+};
+
+// v2
 var levelOrder = function(root) {
   let res = [];
   if (!root) {

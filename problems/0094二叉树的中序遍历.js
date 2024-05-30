@@ -1,11 +1,7 @@
 /*
- * @lc app=leetcode.cn id=94 lang=javascript
- * @lcpr version=21909
- *
  * [94] 二叉树的中序遍历
  */
 
-// @lc code=start
 /**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {

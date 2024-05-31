@@ -59,27 +59,25 @@ var minDepthPreVersion = function(root) {
   return res;
 };
 
-// ↓ 迭代实现  这个测试用例不通过 [1,2,3,4,5]  needReview
+// ↓ v4 迭代实现 容易理解
 var minDepth = function(root) {
   if (!root) {
     return 0;
   }
 
-  let res = 1;
-  const queue = [root];
-  while (queue.length) {
-    const level = [];
-    for (let i = 0; i < queue.length; i++) {
-      // const node = queue.shift(); // 这行代码有问题, queue的长度改变，会影响上一行queue.length 这个for循环的终止条件，让queue里的节点无法遍历完成
-      const node = queue[i]; // 换成这行，或者把for循环换成while循环
+  let arr = [root];
+  let res = 0;
+  while (arr.length) {
+    res += 1;
+    let n = [];
+    for (const node of arr) {
       if (!node.left && !node.right) {
         return res;
       }
-      node.left && level.push(node.left);
-      node.right && level.push(node.right);
+      node.left && n.push(node.left);
+      node.right && n.push(node.right);
     }
-    res += 1;
-    queue = [...level];
+    arr = n;
   }
 };
 

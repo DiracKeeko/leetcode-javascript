@@ -1,3 +1,7 @@
+/*
+ * [222] 完全二叉树的节点个数
+ */
+
 /* 
 给你一棵 完全二叉树 的根节点 root ，求出该树的节点个数。
 
@@ -5,16 +9,46 @@
 
 */
 
-var countNodes = function (root) {
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+
+var countNodes = function(root) {
   let res = 0;
-  function getNum(root) {
-    if (root === null) {
+  function getNum(node) {
+    if (!node) {
       return;
     }
-    res++;
-    getNum(root.left);
-    getNum(root.right);
+    res += 1;
+    node.left && getNum(node.left);
+    node.right && getNum(node.right);
   }
   getNum(root);
+  return res;
+};
+
+
+// v2 迭代 (层序)
+var countNodes = function(root) {
+  if (!root) {
+    return 0;
+  }
+
+  let res = 0;
+  let arr = [root];
+  while (arr.length) {
+    res += arr.length;
+    const n = [];
+    for (const node of arr) {
+      node.left && n.push(node.left);
+      node.right && n.push(node.right);
+    }
+    arr = n;
+  }
   return res;
 };

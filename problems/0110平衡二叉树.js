@@ -2,7 +2,7 @@
  * [110] 平衡二叉树
  */
 
-// 平衡二叉树：左右子树的高度差不超过1
+// 平衡二叉树：任意一个节点的左右子树的高度差不超过1
 
 /**
  * Definition for a binary tree node.
@@ -36,17 +36,23 @@ var isBalanced = function(root) {
 // ↑ 优化解法
 
 // ↓ 自己的思路
+/* 
+  递归，获取每个节点的左右子树的高度差值，存入diffArr
+  
+  在递归完成后，查看是否所有的diffArr都小于2
+*/
 var isBalanced = function(root) {
-  const res = [];
+  const diffArr = [];
   function getDepth(node) {
     if (!node) {
       return 0;
     }
     const l = getDepth(node.left);
     const r = getDepth(node.right);
-    res.push(Math.abs(l - r));
+    diffArr.push(Math.abs(l - r));
     return Math.max(l, r) + 1;
   }
   getDepth(root);
-  return !res.some(item => item > 1);
+
+  return diffArr.every(item => item < 2);
 };

@@ -42,3 +42,21 @@ var sumOfLeftLeaves = function(root) {
   traverse(root);
   return res;
 };
+
+// v2 用这个方法，更容易理解
+var sumOfLeftLeaves = function(root) {
+  let sum = 0;
+
+  function recursion(node, isLeft) {
+    if (isLeft && !node.left && !node.right) {
+      sum += node.val;
+      return;
+    }
+
+    node.left && recursion(node.left, true);
+    node.right && recursion(node.right, false);
+  }
+
+  recursion(root, false);
+  return sum;
+};

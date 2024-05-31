@@ -40,3 +40,21 @@ var binaryTreePaths = function(root) {
   traverse(root, "");
   return res;
 };
+
+// v2 使用这个版本
+var binaryTreePaths = function(root) {
+  if (!root) {
+    return "";
+  }
+  const res = [];
+  function getPath(node, str) {
+    if (!node.left && !node.right) {
+      res.push(str);
+      return;
+    }
+    node.left && getPath(node.left, `${str}->${node.left.val}`);
+    node.right && getPath(node.right, `${str}->${node.right.val}`);
+  }
+  getPath(root, `${root.val}`);
+  return res;
+};

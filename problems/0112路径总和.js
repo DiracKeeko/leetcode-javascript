@@ -39,3 +39,24 @@ var hasPathSum = function(root, targetSum) {
   traverse(root, 0);
   return pathArr.includes(targetSum);
 };
+
+// v2 final  与上一版相同
+var hasPathSum = function(root, targetSum) {
+  if (!root) {
+    return false;
+  }
+  
+  const arr = [];
+  function recursion(node, preSum) {
+    const sum = node.val + preSum; 
+    if (!node.left && !node.right) {
+      arr.push(sum);
+      return;
+    }
+    node.left && recursion(node.left, sum);
+    node.right && recursion(node.right, sum);
+  }
+  
+  recursion(root, 0);
+  return arr.includes(targetSum);
+};

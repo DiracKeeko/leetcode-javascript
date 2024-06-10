@@ -41,6 +41,7 @@ var mergeTrees = function(root1, root2) {
   return root1;
 };
 
+// v2 不新建，利用原节点  v2是个内存使用更少的解法 (性能差不多)
 var mergeTrees = function(root1, root2) {
   if (!root2) {
     return root1;
@@ -53,4 +54,21 @@ var mergeTrees = function(root1, root2) {
   root1.right = mergeTrees(root1.right, root2.right);
   
   return root1;
+};
+
+
+// v3
+var mergeTrees = function(root1, root2) {
+  if (!root1 && !root2) {
+    return null;
+  }
+
+  if (!root1 || !root2) {
+    return root1 || root2;
+  }
+
+  const node = new TreeNode(root1.val + root2.val);
+  node.left = mergeTrees(root1.left, root2.left);
+  node.right = mergeTrees(root1.right, root2.right);
+  return node;
 };

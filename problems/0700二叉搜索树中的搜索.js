@@ -20,6 +20,7 @@
  * @param {number} val
  * @return {TreeNode}
  */
+// v1 暴力解
 var searchBST = function(root, val) {
   const nodeArr = [];
   const valArr = [];
@@ -40,6 +41,7 @@ var searchBST = function(root, val) {
   return null;
 };
 
+// v2
 // ↓ 一个类似二分的思路 这个解法效率很高
 var searchBST = function(root, val) {
   if (!root) {
@@ -52,5 +54,26 @@ var searchBST = function(root, val) {
     return searchBST(root.left, val);
   } else if (root.val < val) {
     return searchBST(root.right, val);
+  }
+};
+
+// v3 不如v2终止条件好 用v2版本
+var searchBST = function(root, val) {
+  if (val === root.val) {
+    return root;
+  }
+
+  if (val > root.val) {
+    if (root.right) {
+      return searchBST(root.right, val);
+    }
+    return null;
+  }
+
+  if (val < root.val) {
+    if (root.left) {
+      return searchBST(root.left, val);
+    }
+    return null;
   }
 };

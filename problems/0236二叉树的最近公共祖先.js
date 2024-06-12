@@ -44,3 +44,24 @@ var lowestCommonAncestor = function(root, p, q) {
   }
   return left ? left : right;
 };
+
+// v2 与v1思路相同
+var lowestCommonAncestor = function(root, p, q) {
+  if (!root) {
+    return null;
+  }
+  if (root === p || root === q) {
+    return root;
+  }
+
+  const leftCommon = lowestCommonAncestor(root.left, p, q);
+  const rightCommon = lowestCommonAncestor(root.right, p, q);
+
+  // 两边都找到了，说明一个在左边，一个在右边，返回公共祖先当前节点root
+  if (leftCommon && rightCommon) {
+    return root;
+  }
+
+  // 如果不是两边都找到，则只找到一个，或者都没有找到
+  return leftCommon || rightCommon;
+};

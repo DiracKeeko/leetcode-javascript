@@ -19,15 +19,21 @@
  * @param {number} val
  * @return {TreeNode}
  */
+
+// 不要考虑的太麻烦，使用空节点插入的方式来实现
+/* 
+  https://programmercarl.com/0701.%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91%E4%B8%AD%E7%9A%84%E6%8F%92%E5%85%A5%E6%93%8D%E4%BD%9C.htm
+*/
 var insertIntoBST = function(root, val) {
-  if (root === null) {
+  if (!root) {
     return new TreeNode(val);
   }
 
-  if (root.val > val) {
-    root.left = insertIntoBST(root.left, val);
-  } else if (root.val < val) {
+  if (val > root.val) {
     root.right = insertIntoBST(root.right, val);
+  }
+  if (val < root.val) {
+    root.left = insertIntoBST(root.left, val);
   }
   return root;
 };

@@ -54,3 +54,24 @@ var monotoneIncreasingDigits = function (n) {
 };
 
 // 数字转化为按位数组 哪个更快？
+
+
+// v2
+var monotoneIncreasingDigits = function(n) {
+  const arr = n.toString(10).split("").map(item => Number(item));
+
+  let flag = arr.length;
+  for (let i = flag - 1; i > 0; i--) { // 这个for循环必须从后到前迭代
+    if (arr[i - 1] > arr[i]) {
+      flag = i;
+      arr[i - 1] -= 1;
+    }
+  }
+  
+  for (let i = flag; i < arr.length; i++) {
+    arr[i] = 9;
+  }
+
+  const numStr = arr.join("");
+  return parseInt(numStr, 10);
+};

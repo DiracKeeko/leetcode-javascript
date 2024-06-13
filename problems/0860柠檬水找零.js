@@ -66,3 +66,62 @@ var lemonadeChange = function (bills) {
   }
   return true;
 };
+
+// v2 
+var lemonadeChange = function(bills) {
+  let n1 = 0; // 放置5
+  let n2 = 0; // 放置10
+  let n3 = 0; // 放置20
+  let i = 0;
+  while (n1 >= 0 && n2 >= 0 && n3 >= 0 && i < bills.length) {
+    const cur = bills[i];
+    if (cur === 5) {
+      n1 += 1;
+    } else if (cur === 10) {
+      n2 += 1;
+      n1 -= 1;
+    } else if (cur === 20) {
+      if (n2 > 0) {
+        n2 -= 1;
+        n1 -= 1;
+      } else {
+        n1 -= 3;
+      }
+      n3 += 1;
+    }
+    i += 1;
+  }
+  if (n1 >= 0 && n2 >= 0 && n3 >= 0 && i === bills.length) {
+    return true;
+  }
+  return false;
+};
+
+
+// v3 不记录20的数量
+var lemonadeChange = function(bills) {
+  let n1 = 0; // 放置5
+  let n2 = 0; // 放置10
+  let i = 0;
+  while (n1 >= 0 && n2 >= 0 && i < bills.length) {
+    const cur = bills[i];
+    if (cur === 5) {
+      n1 += 1;
+    } else if (cur === 10) {
+      n2 += 1;
+      n1 -= 1;
+    } else if (cur === 20) {
+      if (n2 > 0) {
+        n2 -= 1;
+        n1 -= 1;
+      } else {
+        n1 -= 3;
+      }
+    }
+    i += 1;
+  }
+  if (n1 >= 0 && n2 >= 0 && i === bills.length) {
+    return true;
+  }
+  return false;
+};

@@ -49,3 +49,27 @@ var largestSumAfterKNegations = function(nums, k) {
 
   return nums.reduce((acc, cur) => acc + cur, 0);
 };
+
+// v2
+var largestSumAfterKNegations = function(nums, k) {
+  nums.sort((a, b) => a - b);
+  let i = 0;
+  while (k) {
+    if (nums[i] < 0) {
+      nums[i] = -nums[i];
+      i += 1;
+      i = i >= nums.length ? nums.length - 1 : i; // 换用这种 i = Math.min(i, nums.length - 1);
+    } else if (nums[i] === 0) {
+      break;
+    } else {
+      if (nums[i] > nums[i - 1]) {
+        nums[i - 1] = -nums[i - 1];
+        i -= 1;
+      } else {
+        nums[i] = -nums[i];
+      }
+    }
+    k -= 1;
+  }
+  return nums.reduce((acc, cur) => acc + cur, 0);
+};

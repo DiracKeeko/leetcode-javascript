@@ -65,3 +65,21 @@ var findContentChildren = function(g, sizeArr) {
   }
   return res;
 };
+
+// v3 优先使用大饼干，喂饱大胃口的小朋友
+var findContentChildren = function(g, s) {
+  g.sort((a, b) => a - b); // 排序，从小到大
+  s.sort((a, b) => a - b);
+  
+  let i = g.length - 1;
+  let res = 0;
+  while (s.length && i >= 0) {
+    const sMax = s[s.length - 1]; // 找到最大size的饼干
+    if (sMax >= g[i]) {
+      res += 1;
+      s.pop();
+    }
+    i -= 1;
+  }
+  return res;
+};

@@ -50,6 +50,43 @@ function removeDuplicate(arr) {
   return res;
 }
 
+// v2
+var wiggleMaxLength = function(nums) {
+  trimContinuousSame(nums); // 先修剪，去掉nums中连续相同的数 [1, 1, 2, 2] -> [1, 2]
+
+  const len = nums.length;
+  if (len === 1) {
+    return 1;
+  }
+
+  let res = 2; // 加上头、尾两个点
+  for (let i = 1; i < len - 1; i++) {
+    const pre = nums[i - 1];
+    const cur = nums[i];
+    const next = nums[i + 1];
+    if (pre > cur && next > cur) {
+      res += 1;
+    }
+    if (pre < cur && next < cur) {
+      res += 1;
+    }
+  }
+  return res;
+
+};
+
+function trimContinuousSame(arr) {
+  let i = 1;
+  while (i < arr.length) {
+    if (arr[i - 1] === arr[i]) {
+      arr.splice(i, 1);
+    } else {
+      i += 1;
+    }
+  }
+}
+
+
 const arr = [1, 1, 1, 2, 2, 2, 3];
 const res = removeDuplicate(arr);
 console.log({res});

@@ -53,42 +53,34 @@
 // [[7, 0], [6, 1], [5, 2], [7, 1]] 
 // [[5, 0], [7, 0], [6, 1], [5, 2], [7, 1]] (这是错误的结果)
 
-var reconstructQueue = function(people) {
-  const hToPersonMap = {};
-  people.forEach(item => {
-    const [h] = item;
-    hToPersonMap[h] = hToPersonMap[h] || [];
-    hToPersonMap[h].push(item);
-  })
+// 正确的排序过程是
+/* 
+  先按照身高优先排序 身高高的在前面，同身高，身高小的在前面
+  排序完的people： [[7,0], [7,1], [6,1], [5,0], [5,2]，[4,4]]
 
-  const hArr = Object.keys(hToPersonMap);
-  hArr.sort((a, b) => b - a); // 身高排序，从高到低
+  再插入
 
-  const res = [];
-  hArr.forEach(h => {
-    const hPeople = hToPersonMap[h];
-    hPeople.sort(([, a], [, b]) => a - b); // k排序，从小到大
-    hPeople.forEach(person => {
-      const [, k] = person;
-      res.splice(k, 0, person);
-    })
-  })
+  插入的过程：
+  插入[7,0]：[[7,0]]
+  插入[7,1]：[[7,0],[7,1]]
+  插入[6,1]：[[7,0],[6,1],[7,1]]
+  插入[5,0]：[[5,0],[7,0],[6,1],[7,1]]
+  插入[5,2]：[[5,0],[7,0],[5,2],[6,1],[7,1]]
+  插入[4,4]：[[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]
 
-  return res;
+  得到最终结果
+*/
 
-};
-
-
-// 猜想1和猜想2是同样的思路，猜想1是在实现上对猜想2的优化
+// v3 final
 var reconstructQueue = function(people) {
   people.sort(([ha, ka], [hb, kb]) => {
-    if (ha !== hb) {
-      return hb - ha; // h 从高到低
+    if (ha === hb) {
+      return ka - kb; // 同h k从小到大
     }
-    return ka - kb; // 同h k从小到大
-  })
+    return hb - ha; // h从大到小
+  });
 
-  const res = []
+  const res = [];
   for (const person of people) {
     res.splice(person[1], 0, person);
   }
@@ -98,3 +90,4 @@ var reconstructQueue = function(people) {
 // 0406根据身高重建队列 和 0135分发糖果  
 // 总结下来如果题目是排序，且排序有多个维度，那么排序必须按维度分次进行。
 // 即先按其中一个维度排序(升or降), 确定下来一个维度后，再进行第二个维度的排序。
+

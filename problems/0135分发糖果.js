@@ -34,9 +34,10 @@
 // 解题思路，某个元素的两边分别处理。
 // 先判断所有元素和元素右边元素的大小关系。
 // 再判断所有元素和元素左边元素的大小关系。
+// https://programmercarl.com/0135.%E5%88%86%E5%8F%91%E7%B3%96%E6%9E%9C.html#思路
 
 // 不要同时判断左右。两次for循环，
-// 一次从左到右(0, 1, 2, ...)  判断 nums[i] < nums[i + 1]
+// 一次从左到右(1, 2, ...)  判断 nums[i] > nums[i - 1]
 // 一次从右到左(len-1, len-2, ...) 判断 nums[i] > nums[i + 1]
 
 var candy = function(ratings) {
@@ -58,6 +59,29 @@ var candy = function(ratings) {
     }
   }
 
+  const sum = res.reduce((acc, cur) => acc + cur, 0);
+  return sum;
+};
+
+
+// v2 思路一样，实现方式不一样
+var candy = function(ratings) {
+  const len = ratings.length;
+  const res = Array(len).fill(1);
+  for (let i = 1; i < len; i++) {
+    if (ratings[i] > ratings[i - 1]) {
+      res[i] = res[i - 1] + 1;
+    }
+  }
+
+  for (let i = len - 2; i >= 0; i--) {
+    if (ratings[i] > ratings[i + 1]) {
+      const guess = res[i + 1] + 1;
+      if (guess > res[i]) {
+        res[i] = guess;
+      }
+    }
+  }
   const sum = res.reduce((acc, cur) => acc + cur, 0);
   return sum;
 };

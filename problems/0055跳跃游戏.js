@@ -22,3 +22,18 @@ var canJump = function(nums) {
   }
   return false;
 };
+
+// v2
+var canJump = function(nums) {
+  const max = nums.length - 1; // 是index的位置
+  let cover = nums[0];
+  for (let i = 0; i <= cover; i++) {
+    if (nums[i] + i > cover) {
+      cover = nums[i] + i;
+    }
+    if (cover >= max) {
+      return true;
+    }
+  }
+  return false;
+};

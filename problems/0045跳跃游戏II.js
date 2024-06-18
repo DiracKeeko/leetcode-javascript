@@ -24,29 +24,36 @@
  * @param {number[]} nums
  * @return {number}
  */
+
+// 解析见：
+// https://programmercarl.com/0045.%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8FII.html#思路
+
 // 每一步尽可能多的增加覆盖范围
+// v1
 var jump = function(nums) {
   if (nums.length === 1) {
     return 0;
   }
-  let max = 0;
-  let cover = 0;
+  let curCover = 0; // 记录当前可覆盖的范围
+  let nextCover = 0; // 记录下一跳可覆盖的范围
   let count = 0;
 
-  for (let i = 0; i <= cover; i++) {
-    max = Math.max(max, i + nums[i]);
-    // console.log({max});
-    if (max >= nums.length - 1) {
-      return count + 1;
+  for (let i = 0; i < nums.length; i++) {
+    if (i + nums[i] > nextCover) {
+      nextCover = i + nums[i];
     }
-    if (i === cover) {
-      cover = max;
+    if (i === curCover) { // i 移动到curCover的时候就应该跳一次了
       count += 1;
-      // console.log({i, cover, count});
+      curCover = nextCover;
+      if (nextCover >= nums.length - 1) {
+        break;
+      }
     }
   }
+  return count;
 };
 
+// v2 代码随想录的解法二 没get到 这里不写了
 
 let test = [2,3,1,1,4];
 const res = jump(test);

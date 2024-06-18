@@ -48,6 +48,27 @@ var findMinArrowShots = function(points) {
   return count;
 };
 
+// v2 final
+var findMinArrowShots = function(points) {
+  points.sort(([a], [b]) => a - b); // 按起点从小到大排序
+  let count = 0;
+  let [, rightCover] = points[0];
+  for (let i = 1; i < points.length; i++) {
+    const [l, r] = points[i];
+    if (l <= rightCover) {
+      // rightCover = Math.min(r, rightCover); // 等价下面这行，但是下面的执行更快
+      if (rightCover > r) {
+        rightCover = r;
+      }
+    } else {
+      count += 1;
+      rightCover = r;
+    }
+  }
+  count += 1;
+  return count;
+};
+
 const testCase = [[3,9],[7,12],[3,8],[6,8],[9,10],[2,9],[0,9],[3,9],[0,6],[2,8]];
 const res = findMinArrowShots(testCase);
 console.log("res->", res);

@@ -16,32 +16,19 @@
  * @param {number[][]} intervals
  * @return {number}
  */
+
+// v2
 var eraseOverlapIntervals = function(intervals) {
-  const len = intervals.length;
-  if (len === 0 || len === 1) {
-    return 0;
-  }
-
-  // 先排序 [is, ie]  is从小到大。若is相同，ie从小到大
-  intervals.sort(([as, ae], [bs, be]) => {
-    if (as === bs) {
-      return as - bs;
-    }
-    return ae - be;
-  })
-
-  let i = 0;
-  let j = 1;
-  let count = 0;
-  while (j < len) {
-    const [, ie] = intervals[i];
-    const [js] = intervals[j];
-    if (ie > js) {
+  intervals.sort(([a], [b]) => a - b);
+  let [, right] = intervals[0];
+  let count = 0
+  for (let i = 1; i < intervals.length; i++) {
+    const [l, r] = intervals[i];
+    if (l < right) {
       count += 1;
-      j += 1;
+      right = Math.min(right, r); // 改成if 执行效率会提高很多
     } else {
-      i = j;
-      j += 1;
+      right = r;
     }
   }
   return count;

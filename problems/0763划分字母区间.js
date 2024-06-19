@@ -92,7 +92,64 @@ var partitionLabels = function(s) {
   return res;
 };
 
+// v3  比较容易理解
+var partitionLabels = function(s) {
+  const map = {};
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i];
+    map[char] = i;
+  }
 
+  const indexArr = []; // 创建一个arr, 存储字符出现的最大下标
+  // aba -> indexArr = [2, 1, 2]。当 indexArr[i] === i 的时候，产生一次切割
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i];
+    const maxIndex = map[char];
+    indexArr[i] = maxIndex;
+  }
+
+  const res = [];
+  let l = 0; // leftIndex
+  let maxIndex = indexArr[0];
+  for (let i = 0; i < indexArr.length; i++) {
+    if (maxIndex === i) {
+      res.push(i - l + 1);
+      l = i + 1;
+      maxIndex = indexArr[i + 1];
+    }
+    if (indexArr[i] > maxIndex) {
+      maxIndex = indexArr[i];
+    }
+  }
+  return res;
+};
+
+
+// v4 相较于v3,去除 indexArr
+var partitionLabels = function(s) {
+  const map = {};
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i];
+    map[char] = i;
+  }
+
+  const res = [];
+  let l = 0; // leftIndex
+  let maxIndex = map[s[0]];
+  for (let i = 0; i < s.length; i++) {
+    if (maxIndex === i) {
+      res.push(i - l + 1);
+      l = i + 1;
+      const nextChar = s[i + 1];
+      maxIndex = map[nextChar];
+    }
+    const curChar = s[i];
+    if (map[curChar] > maxIndex) {
+      maxIndex = map[curChar];
+    }
+  }
+  return res;
+};
 
 // const testCase = "ababcbacadefegdehijhklij";
 const testCase = "caedbdedda";

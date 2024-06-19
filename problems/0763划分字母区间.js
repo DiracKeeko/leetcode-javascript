@@ -60,38 +60,7 @@ function getLetterHeadAndTail(s) {
   return regionArr;
 }
 
-// const testCase = "ababcbacadefegdehijhklij";
-// const res = partitionLabels(testCase);
-// console.log({res});
-
 // 优化一下，不找区间，找字母的最远出现位置
-var partitionLabels = function(s) {
-  const map = {};
-  for (let i = 0; i < s.length; i++) {
-    const char = s[i];
-    map[char] = i;
-  }
-  
-  let res = [];
-  let i = 0;
-  let j = 0;
-  let max = map[s[0]];
-  while (j < s.length) {
-    const nextChar = s[j];
-    const nextIndex= map[nextChar];
-    if (nextIndex > max) {
-      max = nextIndex;
-    }
-    j += 1;
-    if (j > max) {
-      res.push(j - i);
-      i = j;
-      max = map[s[i]];
-    }
-  }
-  return res;
-};
-
 // v3  比较容易理解
 var partitionLabels = function(s) {
   const map = {};

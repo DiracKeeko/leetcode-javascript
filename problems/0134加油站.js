@@ -77,6 +77,7 @@ function checkStart(i, diffArr) {
 // 贪心算法
 // 先决条件 totalSum >= 0，那么一定能跑一圈
 // 贪心的重点 如果curSum<0，那么就从curSum的下一个位置开始往后找
+// v1
 var canCompleteCircuit = function(gas, cost) {
   let totalSum = 0;
   let curSum = 0;
@@ -98,6 +99,30 @@ var canCompleteCircuit = function(gas, cost) {
   }
   return startIndex;
 }
+
+// v2 对比v1
+var canCompleteCircuit = function(gas, cost) {
+  const diffArr = gas.map((item, index) => item - cost[index]); // 不需要这个diffArr
+  // 多了一个存储，还多了一次循环
+
+  let totalSum = 0;
+  let sum = 0
+  let index = 0;
+
+  for (let i = 0; i < diffArr.length; i++) {
+    totalSum += diffArr[i];
+    sum += diffArr[i];
+    if (sum < 0) {
+      index = i + 1;
+      sum = 0;
+    }
+  }
+
+  if (totalSum < 0) {
+    return -1;
+  }
+  return index;
+};
 
 /* 
   为什么遍历到结尾就可以选择出答案呢，而且答案就是第一个遍历到结尾累加和不为0的位置，是否答案可能是该位置后面的位置呢；

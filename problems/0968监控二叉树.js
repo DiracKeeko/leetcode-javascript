@@ -70,3 +70,33 @@ var minCameraCover = function(root) {
   }
 
 };
+
+// v2 === v1
+var minCameraCover = function(root) {
+  let count = 0;
+
+  const rootState = postOrder(node);
+  if (rootState === 0) {
+    count += 1;
+  }
+  return count;
+
+  function postOrder(node) {
+    if (!node) {
+      return 2;
+    }
+
+    const l = postOrder(node.left);
+    const r = postOrder(node.right);
+    if (l === 2 && r === 2) {
+      return 0;
+    }
+    if (l === 0 || r === 0) {
+      count += 1;
+      return 1;
+    }
+    if (l === 1 || r === 1) {
+      return 2;
+    }
+  }
+};

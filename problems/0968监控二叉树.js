@@ -75,7 +75,7 @@ var minCameraCover = function(root) {
 var minCameraCover = function(root) {
   let count = 0;
 
-  const rootState = postOrder(node);
+  const rootState = postOrder(root);
   if (rootState === 0) {
     count += 1;
   }

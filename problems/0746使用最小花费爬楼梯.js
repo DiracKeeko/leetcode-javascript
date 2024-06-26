@@ -49,3 +49,15 @@ var minCostClimbingStairs = function(cost) {
   }
   return dp.pop();
 };
+
+// v2  用if执行效率最高，但是做题的时候最好是用Math.min(), Math.min()语义更直观
+var minCostClimbingStairs = function(cost) {
+  const dp = [0, 0];
+  for (let i = 2; i <= cost.length; i++) {
+    dp[i] = dp[i - 1] + cost[i - 1];
+    if (dp[i] > dp[i - 2] + cost[i - 2]) {
+      dp[i] = dp[i - 2] + cost[i - 2];
+    }
+  }
+  return dp.pop();
+};

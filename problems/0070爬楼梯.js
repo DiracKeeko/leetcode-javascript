@@ -39,3 +39,19 @@ var climbStairs = function(n) {
   }
   return arr[n];
 };
+
+// v2 用变量记录，节约内存
+var climbStairs = function(n) {
+  if (n < 2) {
+    return 1;
+  }
+
+  let f1 = 1;
+  let f2 = 1;
+  for (let i = 2; i <= n; i++) {
+    const f3 = f1 + f2;
+    f1 = f2;
+    f2 = f3;
+  }
+  return f2;
+};

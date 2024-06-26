@@ -71,3 +71,33 @@ var uniquePaths = function (m, n) {
   }
   return dp[m - 1][n - 1];
 };
+
+// v2 不如v1简单
+var uniquePaths = function(m, n) {
+  const arr = Array(m + 1).fill(Array(n + 1));
+  arr[0].fill(0);
+  for (let i = 1; i <= m; i++) {
+    arr[i][0] = 0;
+    if (i === 1) {
+      arr[i][0] = 1;
+    }
+    for (let j = 1; j <= n; j++) {
+      arr[i][j] = arr[i - 1][j] + arr[i][j - 1];
+    }
+  }
+  return arr[m][n];
+};
+
+// 这题不需要补一行一列
+// v3 最精简写法
+var uniquePaths = function(m, n) {
+  const firstLine = Array(n).fill(1);
+  const arr = [firstLine];
+  for (let i = 1; i < m; i++) {
+    arr[i] = [1]; // 最后的优化
+    for (let j = 1; j < n; j++) {
+      arr[i][j] = arr[i - 1][j] + arr[i][j - 1];
+    }
+  }
+  return arr[m - 1][n - 1];
+};

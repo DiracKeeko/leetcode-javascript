@@ -31,6 +31,7 @@
  * @param {number[][]} obstacleGrid
  * @return {number}
  */
+// v1
 var uniquePathsWithObstacles = function (obstacleGrid) {
   const rowNum = obstacleGrid.length;
   const colNum = obstacleGrid[0].length;
@@ -78,7 +79,7 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
   return dp[rowNum - 1][colNum - 1];
 };
 
-// ↓ 逻辑精简，易于理解。 执行效率没有上面版本高
+// v2 ↓ 逻辑精简，易于理解。 执行效率没有上面版本高
 var uniquePathsWithObstacles = function (obstacleGrid) {
   const r = obstacleGrid.length;
   const c = obstacleGrid[0].length;
@@ -104,6 +105,86 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
   return dp[r - 1][c - 1];
 };
 
+// v3 有问题 39/41 cases passed (N/A)
+/* 
+  无法处理 [[1],[0]] 这种输入
+ */
+var uniquePathsWithObstacles = function(obstacleGrid) {
+  const row = obstacleGrid.length;
+  const col = obstacleGrid[0].length;
+  // 不额外增加行和列
+  const firstLine = Array(col).fill(0);
+  for (let j = 0; j < col; j++) {
+    if (obstacleGrid[0][j] === 0) {
+      firstLine[j] = 1;
+    } else {
+      // obstacleGrid[0][j] === 1 => break
+      break;
+    }
+  }
+  const res = [firstLine];
+  for (let i = 1; i < row; i++) {
+    res[i] = [0];
+  }
+  for (let i = 1; i < row; i++) {
+    if (obstacleGrid[i][0] === 0) {
+      res[i] = [1];
+    } else {
+      break;
+    }
+  }
+
+  for (let i = 1; i < row; i++) {
+    for(let j = 1; j < col; j++) {
+      if (obstacleGrid[i][j] === 1) {
+        res[i][j] = 0
+      } else {
+        res[i][j] = res[i - 1][j] + res[i][j - 1];
+      }
+    }
+  }
+  return res[row - 1][col - 1];
+};
+
+// v4 可以通过
+var uniquePathsWithObstacles = function(obstacleGrid) {
+  const row = obstacleGrid.length;
+  const col = obstacleGrid[0].length;
+  // 不额外增加行和列
+  const firstLine = Array(col).fill(0);
+  for (let j = 0; j < col; j++) {
+    if (obstacleGrid[0][j] === 0) {
+      firstLine[j] = 1;
+    } else {
+      // obstacleGrid[0][j] === 1 => break
+      break;
+    }
+  }
+  const res = [firstLine];
+  for (let i = 1; i < row; i++) {
+    res[i] = [0];
+  }
+  for (let i = 0; i < row; i++) { // 相比于v3优化了这里
+    if (obstacleGrid[i][0] === 0) {
+      res[i][0] = 1; // 相比于v3 优化了这里
+    } else {
+      break;
+    }
+  }
+
+  for (let i = 1; i < row; i++) {
+    for(let j = 1; j < col; j++) {
+      if (obstacleGrid[i][j] === 1) {
+        res[i][j] = 0
+      } else {
+        res[i][j] = res[i - 1][j] + res[i][j - 1];
+      }
+    }
+  }
+  return res[row - 1][col - 1];
+};
+
+// v2最容易理解，用v2
 const testCase = [
   [0, 0, 0],
   [0, 1, 0],

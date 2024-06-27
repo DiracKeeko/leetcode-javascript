@@ -28,7 +28,7 @@
     6
   
   输出
-    5
+    11
 */
 
 /**
@@ -71,7 +71,14 @@
 function testWeightBagProblem(weight, value, size) {
   const len = weight.length;
   const dp = new Array(len).fill(0).map(() => new Array(size + 1).fill(0)); // dp[i][j]全部初始化为0
-  for (let j = weight[0]; j <= size; j++) {
+  
+  /* 
+  for (let j = 0; j <= size; j++) {
+    dp[0][j] = j > weight[0] ? value[0] : 0;
+  }
+  // 用下面的方式初始化第一行
+   */
+  for (let j = weight[0]; j <= size; j++) { // 这个初始化是个很优秀的思路，不需要从0开始去if判断
     dp[0][j] = value[0];
   }
 
@@ -84,7 +91,7 @@ function testWeightBagProblem(weight, value, size) {
       }
     }
   }
-  console.table(dp);
+  // console.table(dp);
   return dp[len - 1][size];
 }
 

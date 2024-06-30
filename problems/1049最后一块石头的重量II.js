@@ -37,3 +37,23 @@ var lastStoneWeightII = function(stones) {
 
   return sum - dp[target] * 2;
 };
+
+
+// v2 
+var lastStoneWeightII = function(stones) {
+  const sum = stones.reduce((acc, cur) => acc + cur, 0);
+  const target = sum >> 1;
+  const dp = Array(target + 1).fill(0);
+  for (let i = 0; i < stones.length; i++) {
+    for (let j = target; j >= stones[i]; j--) {
+      const used = dp[j - stones[i]] + stones[i];
+      if (used > dp[j]) { // 这个if的性能优化非常大
+        dp[j] = used;
+      }
+    }
+  }
+  // const half = dp.pop();
+  // const surPlus = sum - half;
+  // return Math.abs(surPlus - half);
+  return sum - dp[target] * 2;
+};

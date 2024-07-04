@@ -44,8 +44,8 @@ var findMaxForm = function (strs, m, n) {
   for (const str of strs) {
     let x = 0; // zeroNum
     let y = 0; // oneNum
-    for (const letter of str) {
-      if (letter === "0") {
+    for (const char of str) {
+      if (char === "0") {
         x += 1;
       } else {
         y += 1;

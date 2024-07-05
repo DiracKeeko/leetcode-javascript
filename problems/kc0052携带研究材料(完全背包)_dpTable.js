@@ -57,7 +57,7 @@
     ix -> 物品序号
     j -> 背包容量
     
-    增加额外的一行，首行，填充为0。
+    增加额外的一行，首行，填充为0。 (总体上是增加了一行一列)
     第i物品 = nums[ix - 1]
     在背包容量j为0时，dp[ix][j]都是0   -> 第一列初始化为0
 
@@ -85,11 +85,12 @@ function testWeightBagProblem(weight, value, size) {
   const dp = Array(len + 1).fill(0).map(() => new Array(size + 1).fill(0)); // dp[i][j]全部初始化为0
 
   for (let ix = 1; ix <= len; ix++) {
+    const iMove = ix - 1; // 物品的下标为iMove
     for (let j = 1; j <= size; j++) {
       if(j < weight[ix - 1]) {
         dp[ix][j] = dp[ix - 1][j];
       } else {
-        dp[ix][j] = Math.max(dp[ix - 1][j], dp[ix][j - weight[ix - 1]] + value[ix - 1]);
+        dp[ix][j] = Math.max(dp[ix - 1][j], dp[ix][j - weight[iMove]] + value[iMove]);
       }
     }
   }
@@ -97,20 +98,6 @@ function testWeightBagProblem(weight, value, size) {
   return dp[len][size];
 }
 
-// 一维dp数组实现 (滚动数组实现)
-// dp[j] 容量为j的背包，在0-i之间任选，可以重复取，最大价值是dp[j]
-function testWeightBagProblem(weight, value, size) {
-  const len = weight.length;
-  const dp = Array(size + 1).fill(0);
-
-  for (let i = 0; i < len; i++) {
-    for (let j = weight[i]; j <= size; j++) {
-      dp[j] = Math.max(dp[j], dp[j - weight[i]] + value[i]);
-    }
-  }
-  console.log(dp);
-  return dp[size];
-}
 
 const weight = [1, 1, 2];
 const value = [1, 2, 5];

@@ -44,3 +44,21 @@ var coinChange = function (coins, amount) {
 
   return dp[amount] === Infinity ? -1 : dp[amount];
 };
+
+// v2 等价于v1
+var coinChange = function(coins, amount) {
+  const dp = Array(amount + 1).fill(Infinity);
+  dp[0] = 0;
+  for (let i = 1; i <= amount; i++) {
+    for (let j = 0; j < coins.length; j++) {
+      const cur = coins[j];
+      if (i >= cur) {
+        dp[i] = Math.min(dp[i], dp[i - cur] + 1);
+      }
+    }
+  }
+  if (dp[amount] === Infinity) {
+    return -1;
+  }
+  return dp[amount];
+};

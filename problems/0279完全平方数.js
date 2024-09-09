@@ -44,3 +44,29 @@ var numSquares = function(n) {
   }
   return dp[n] === Infinity ? -1 : dp[n];
 };
+
+
+// v2 思路完全相同，用if取代Math.max 提高执行效率  (提升非常多)
+var numSquares = function(n) {
+  const arr = [];
+  for (let i = 1; i <= n; i++) {
+    const squareNum = i ** 2;
+    if (squareNum <= n) {
+      arr.push(squareNum);
+    } else {
+      break;
+    }
+  }
+
+  const dp = Array(n + 1).fill(Infinity);
+  dp[0] = 0;
+  for (let i = 1; i <= n; i++) {
+    for (const num of arr) {
+      if (i >= num) {
+        if (dp[i - num] + 1 < dp[i])
+        dp[i] = dp[i - num] + 1;
+      }
+    }
+  }
+  return dp[n];
+};

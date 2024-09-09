@@ -27,6 +27,11 @@
   const preIndex = j - wordDict[i].length;
   dp[j] = dp[j - preIndex] && s.slice(preIndex, j + 1) === wordDict[i];
 
+  // ## 注意 dp.length = s.length + 1; 所以才有上面的递推公式 
+  // 实际上:  
+    j位置能否被单词表示 
+        = (j - preIndex - 1)位置能否被单词表示 && s.slice(preIndex, j + 1) === wordDict[i]
+
   dp[j] = Array(s.length + 1);
   dp[j]填充为false , dp[0] = true;
 
@@ -55,6 +60,30 @@ var wordBreak = function(s, wordDict) {
   
   console.log({dp});
   return dp[s.length];
+};
+
+
+// v2 效率更高
+var wordBreak = function(s, wordDict) {
+  const len = s.length;
+  const dp = Array(len + 1).fill(false);
+  dp[0] = true;
+
+  for (let i = 1; i <= len; i++) {
+    for (const word of wordDict) {
+      if (dp[i]) {
+        continue;   
+      }
+      const le = word.length;
+      const startIndex = i - le;
+      if (startIndex >= 0) {
+        const cutStr = s.slice(startIndex, i);
+        dp[i] = dp[startIndex] && cutStr === word;
+      }
+    }
+  }
+  console.log(dp);
+  return dp[len];
 };
 
 const s = "leetcode", wordDict = ["leet","code"];

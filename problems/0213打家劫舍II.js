@@ -23,10 +23,13 @@
  * @return {number}
  */
 var rob = function(arr) {
-  if (arr.length === 1) {
-    return arr[0];
+  // if (arr.length === 1) {
+  //   return arr[0];
+  // }
+  if (arr.length <= 3) {
+    return Math.max(...arr);
   }
-  
+
   const res1 = robArr(arr.slice(1));
   arr.pop();
   const res2 = robArr(arr);

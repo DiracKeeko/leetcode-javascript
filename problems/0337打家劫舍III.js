@@ -32,6 +32,8 @@
  * @param {TreeNode} root
  * @return {number}
  */
+
+// final
 var rob = function(root) {
   return Math.max(...postOrder(root));
 
@@ -52,6 +54,25 @@ var rob = function(root) {
   }
 }
 
+// v1 思路正确，但是效率低，会超时 (重复计算了很多值)
+var rob = function(root) {
+  if (!root) {
+    return 0;
+  }
+  if (!root.left && !root.right) {
+    return root.val;
+  }
+
+  let chooseMax = root.val; // 选中当前val
+  if (root.left) {
+    chooseMax = chooseMax + rob(root.left.left) + rob(root.left.right); // 添加隔层的val
+  }
+  if (root.right) {
+    chooseMax = chooseMax + rob(root.right.left) + rob(root.right.right); // 继续添加隔层的val
+  }
+  const subMax = rob(root.left) + rob(root.right);
+  return Math.max(subMax, chooseMax);
+};
 
 // robVersion1 -> 思路1，不能全过
 /* 

@@ -28,6 +28,7 @@
  * @param {number[]} nums
  * @return {number}
  */
+// v1
 var rob = function(nums) {
   const dp = [nums[0], Math.max(nums[0], nums[1])];
   for (let i = 2; i < nums.length; i++) {
@@ -36,3 +37,30 @@ var rob = function(nums) {
   // return dp.pop(); // 不能用pop 否则 nums = [0] 这种用例 会返回NaN
   return dp[nums.length - 1];
 };
+/* 
+v1
+70/70 cases passed (64 ms)
+Your runtime beats 24.16 % of javascript submissions
+Your memory usage beats 60.1 % of javascript submissions (49 MB)
+*/
+
+// v2
+// dp[i] 表示在选中nums[i]的情况下，所能获取的最大价值
+var rob = function(nums) {
+  const len = nums.length;
+  if (len < 3) {
+    return Math.max(...nums);
+  }
+  const dp = nums.slice(0, 2);
+  dp[2] = nums[2] + nums[0];
+  for (let i = 3; i < len; i++) {
+    dp[i] = Math.max(dp[i - 2], dp[i - 3]) + nums[i];
+  }
+  return Math.max(...dp.slice(-2));
+};
+/* 
+v2
+70/70 cases passed (55 ms)
+Your runtime beats 75.48 % of javascript submissions
+Your memory usage beats 93.15 % of javascript submissions (48.9 MB)
+*/

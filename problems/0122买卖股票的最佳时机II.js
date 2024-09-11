@@ -56,33 +56,34 @@
  * @param {number[]} prices
  * @return {number}
  */
-// 动态规划解法
+// 动态规划解法 dp v1
 var maxProfit = function(prices) {
+  const len = prices.length;
   const dp = [[0, -prices[0]]];
-
-  for (let i = 1; i < prices.length; i++) {
-    dp[i] = [];
-    dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
-    dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+  for (let i = 1; i < len; i++) {
+    const withoutStock = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+    const withStock = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+    dp[i] = [withoutStock, withStock];
   }
-  return dp[prices.length - 1][0];
+  return dp[len - 1][0];
 }
 
-// maxArr[i] 表示第i天能够获得的最大利润
+// dp v2 maxArr[i] 表示第i天能够获得的最大利润
 var maxProfit = function(prices) {
-  const maxArr = [0];
-  for (let i = 1; i < prices.length; i++) {
-    const profit = prices[i] - prices[i - 1];
-    if (profit > 0) {
-      maxArr[i] = maxArr[i - 1] + profit;
+  const len = prices.length;
+  const dp = [0];
+  for (let i = 1; i < len; i++) {
+    const diff = prices[i] - prices[i - 1];
+    if (diff > 0) {
+      dp[i] = dp[i - 1] + diff;
     } else {
-      maxArr[i] = maxArr[i - 1];
+      dp[i] = dp[i - 1];
     }
   }
-  return Math.max(...maxArr);
+  return dp[len - 1];
 };
 
-// 优化存储空间 
+// v2 优化存储空间 去掉了dp table 演变成了贪心的形式
 var maxProfit = function(prices) {
   let max = 0;
   for (let i = 1; i < prices.length; i++) {

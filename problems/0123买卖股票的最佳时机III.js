@@ -55,7 +55,8 @@ var maxProfit = function (prices) {
 
   for (let i = 1; i < prices.length; i++) {
     dp[i] = [];
-    dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
+    // 优化 cur = prices[i]
+    dp[i][1] = Math.max(dp[i - 1][1], -prices[i]); 
     dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
     dp[i][3] = Math.max(dp[i - 1][3], dp[i - 1][2] - prices[i]);
     dp[i][4] = Math.max(dp[i - 1][4], dp[i - 1][3] + prices[i]);
@@ -63,3 +64,34 @@ var maxProfit = function (prices) {
 
   return dp[prices.length - 1][4];
 };
+
+
+// 下面的贪心算法会失败
+var maxProfit = function(prices) {
+  const diffArr = [];
+
+  let diffAcc = 0;
+  for (let i = 1; i < prices.length; i++) {
+    const diff = prices[i] - prices[i - 1];
+    if (diff > 0) {
+      diffAcc += diff;
+    } else {
+      diffArr.push(diffAcc);
+      diffAcc = 0;
+    }
+  }
+  diffArr.push(diffAcc);
+
+  diffArr.sort((a, b) => b - a);
+  console.log(diffArr);
+  const resArr = diffArr.slice(0, 2);
+  return resArr.reduce((acc, cur) => acc + cur, 0);
+};
+
+/* 
+  贪心算法无法正确处理交易次数
+
+  如这样的输入 [1,2,4,2,5,7,2,4,9,0]
+  输出的diffArr为 [ 7, 5, 3, 0 ]
+  两次交易的返回结果是 12，正确答案是13
+*/

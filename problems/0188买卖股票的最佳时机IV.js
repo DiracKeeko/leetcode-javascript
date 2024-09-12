@@ -48,6 +48,8 @@
  * @param {number[]} prices
  * @return {number}
  */
+
+// v1
 var maxProfit = function (k, prices) {
   const dp = [[0]];
   for (let j = 1; j <= k; j++) {
@@ -70,6 +72,32 @@ var maxProfit = function (k, prices) {
   }
   console.table(dp);
   return dp[prices.length - 1][2 * k];
+};
+
+// v2 不一样的取j的方式，最终实现效果相同
+var maxProfit = function(k, prices) {
+  const len = prices.length;
+  const dp = [[]];
+  for (let j = 0; j < 2 * k + 1; j++) {
+    if (j % 2 === 0) {
+      dp[0][j] = 0;
+    } else {
+      dp[0][j] = -prices[0];
+    }
+  }
+
+  for (let i = 1; i < len; i++) {
+    const cur = prices[i];
+    dp[i] = [0];
+    for (let j = 1; j < 2 * k + 1; j++) {
+      if (j % 2 === 0) {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - 1] + cur);
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - 1] - cur);
+      }
+    }
+  }
+  return dp[len - 1][2 * k];
 };
 
 const k = 2,

@@ -50,6 +50,7 @@
  * @param {number[]} prices
  * @return {number}
  */
+// v1
 var maxProfit = function (prices) {
   const dp = [[0, -prices[0], 0, 0]];
   for (let i = 1; i < prices.length; i++) {
@@ -65,6 +66,24 @@ var maxProfit = function (prices) {
   }
   console.table(dp);
   return Math.max(...dp[prices.length - 1]);
+};
+
+// v2 简化代码
+var maxProfit = function(prices) {
+  const dp = [[0, -prices[0], 0, 0]];
+  const len = prices.length;
+  for (let i = 1; i < len; i++) {
+    const cur = prices[i];
+    dp[i] = [];
+    dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][3]);
+    dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - cur, dp[i - 1][3] - cur);
+    dp[i][2] = dp[i - 1][1] + cur; 
+    // ↑ 注意这里没有Math.max  "2" 这个状态只能由上一阶段的"1"推导出来
+    dp[i][3] = dp[i - 1][2]; // 注意 
+    // ↑ 注意这里的"3"状态，只能由上一阶段的"2"推导出来 
+    // 上面两个箭头处的位置，实现了冻结期的处理
+  }
+  return Math.max(...dp[len - 1]);
 };
 
 const arr = [1, 2, 3, 0, 2];

@@ -37,14 +37,16 @@ dp[i][0] = 0;  dp[0][j] = 0; 其他位置不需要初始化
  * @param {number[]} nums2
  * @return {number}
  */
+// v1 二维dp数组
 var findLength = function(nums1, nums2) {
-  const dp = [];
-  dp[0] = Array(nums2.length + 1).fill(0);
+  const len1 = nums1.length;
+  const len2 = nums2.length;
+  const dp = [Array(len2 + 1).fill(0)];
+
   let max = 0;
-  
-  for (let i = 1; i <= nums1.length; i++) {
+  for (let i = 1; i <= len1; i++) {
     dp[i] = [0];
-    for (let j = 1; j <= nums2.length; j++) {
+    for (let j = 1; j <= len2; j++) {
       if (nums1[i - 1] === nums2[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1] + 1;
       } else {
@@ -53,8 +55,43 @@ var findLength = function(nums1, nums2) {
       max = dp[i][j] > max ? dp[i][j] : max;
     }
   }
-  console.table(dp);
   return max;
+};
+// 对v1 感受一下连续子数组，递推关系
+
+// v2
+// dp[i] 表示nums1中 以nums1[i] 结尾的数字 与 nums2对比 取得的最长子数组的长度
+var findLength = function(nums1, nums2) {
+  const len = nums1.length;
+  const dp = Array(len).fill(0);
+  dp[0] = nums2.includes(nums1[0]) ? 1 : 0;
+  for (let i = 1; i < len; i++) {
+    let section = nums1.slice(i - dp[i - 1], i + 1);
+    if (isCommon(section)) {
+      dp[i] = dp[i - 1] + 1;
+    } else {
+      for (let j = i; j >= 0; j--) {
+        section = nums1.slice(j, i + 1);
+        if (isCommon(section)) {
+          dp[i] = i + 1 - j;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+  return Math.max(...dp);
+
+  function isCommon(section, arr = nums2) {
+    const sectionLength = section.length;
+    
+    for (let i = 0; i <= arr.length - sectionLength; i++) {
+      if (arr.slice(i, i + sectionLength).every((val, index) => val === section[index])) {
+        return true;
+      }
+    }
+    return false;
+  }
 };
 
 // const nums1 = [0,0,0,0,1], nums2 = [1,0,0,0,0];

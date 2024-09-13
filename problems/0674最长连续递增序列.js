@@ -26,7 +26,7 @@
  * @return {number}
  */
 var findLengthOfLCIS = function(nums) {
-  const dp = Array(nums.length).fill(1);
+  const dp = Array(nums.length).fill(1); // const len = nums.length;
 
   for (let i = 1; i < nums.length; i++) {
     if (nums[i] > nums[i - 1]) {

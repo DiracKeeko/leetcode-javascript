@@ -39,7 +39,7 @@ dp五步
  */
 var lengthOfLIS = function (nums) {
   const length = nums.length;
-  if (length === 0) {
+  if (length === 0) { // 虽然case中没用到，但是要加
     return 0;
   }
   const dp = new Array(length).fill(1);

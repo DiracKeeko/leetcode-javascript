@@ -44,6 +44,12 @@
  * @param {string} text2
  * @return {number}
  */
+// v1
+/* 
+47/47 cases passed (122 ms)
+Your runtime beats 51.41 % of javascript submissions
+Your memory usage beats 94.78 % of javascript submissions (69.9 MB)
+*/
 var longestCommonSubsequence = function (text1, text2) {
   const [l1, l2] = [text1.length, text2.length];
   const dp = [Array(l2 + 1).fill(0)];
@@ -63,6 +69,7 @@ var longestCommonSubsequence = function (text1, text2) {
 };
 
 
+// v2
 // ↓ 这种赋值方式 比上面一种赋值方式执行的效率要搞
 /* 
 47/47 cases passed (104 ms)

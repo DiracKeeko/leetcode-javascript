@@ -15,7 +15,8 @@
   if (s[i - 1] === t[j - 1]) {
     dp[i][j] = dp[i - 1][j - 1] && true;
   } else {
-    dp[i][j] = dp[i][j - 1]; // 这里与1143题不同, 只能从一个方向取
+    dp[i][j] = dp[i][j - 1]; // 这里与1143题不同, 只能从一个方向取 
+    // (即 只能取 s的[0, i] 与 t的[0, j - 1]的结果)
   }
 
 3、初始化
@@ -34,12 +35,12 @@ var isSubsequence = function (s, t) {
   const dp = [Array(tl + 1).fill(true)];
 
   for (let i = 1; i <= sl; i++) {
-    dp[i] = [false];
+    dp[i] = [false]; // 注意这个初始化逻辑
     for (let j = 1; j <= tl; j++) {
       if (s[i - 1] === t[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1]; // dp[i][j] = dp[i - 1][j - 1] && true;
       } else {
-        dp[i][j] = dp[i][j - 1];
+        dp[i][j] = dp[i][j - 1]; // 只能取 s的[0, i] 与 t的[0, j - 1]的结果
       }
     }
   }

@@ -38,13 +38,16 @@ dp五步
  * @param {string} word2
  * @return {number}
  */
+
 var minDistance = function (word1, word2) {
   const [l1, l2] = [word1.length, word2.length];
-  const dp = [
-    Array(l2 + 1)
-      .fill(0)
-      .map((item, index) => index),
-  ];
+  // const dp = [
+  //   Array(l2 + 1)
+  //     .fill(0)
+  //     .map((item, index) => index),
+  // ];
+  // 上下等价
+  const dp = [Array.from({ length: l2 + 1 }, (v, i) => i)];
 
   for (let i = 1; i <= l1; i++) {
     dp[i] = [i];
@@ -64,6 +67,28 @@ var minDistance = function (word1, word2) {
   return dp[l1][l2];
 };
 
-const w1 = "a", w2 = "b";
+// v2 先找最长公共子序列的长度，再求出到达公共最长子序列需要的步骤
+var minDistance = function (word1, word2) {
+  return word1.length + word2.length - 2 * lcs(word1, word2);
+
+  function lcs(arr1, arr2) {
+    const [l1, l2] = [arr1.length, arr2.length];
+    const dp = [Array(l2 + 1).fill(0)];
+    for (let i = 1; i <= l1; i++) {
+      dp[i] = [0];
+      for (let j = 1; j <= l2; j++) {
+        if (arr1[i - 1] === arr2[j - 1]) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+        }
+      }
+    }
+    return dp[l1][l2];
+  }
+};
+
+const w1 = "a",
+  w2 = "b";
 const res = minDistance(w1, w2);
 console.log("res->", res);

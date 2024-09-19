@@ -5,7 +5,7 @@
 /* 
 dp五步
 1. 确定dp数组（dp table）以及下标的含义
-  dp[i][j] 表示 字符串s 在[i, j]范围 (含i, j) 最长回文子序列的长度
+  dp[i][j] 表示字符串s 在[i, j]区间(含i, 含j) 所包含的最大回文子序列的长度
 
 2. 确定递推公式
   if (s[i] === s[j]) {
@@ -28,6 +28,7 @@ dp五步
  * @param {string} s
  * @return {number}
  */
+// v1
 var longestPalindromeSubseq = function(s) {
   const l = s.length;
   const dp = Array(l).fill(0).map(() => Array(l).fill(0));
@@ -49,6 +50,30 @@ var longestPalindromeSubseq = function(s) {
   return dp[0][l - 1];
 };
 
+// v2 优化代码
+var longestPalindromeSubseq = function(s) {
+  const len = s.length;
+  const dp = Array(len).fill(0).map(() => Array(len).fill(0));
+
+  for (let i = len - 1; i >= 0; i--) {
+    dp[i][i] = 1;
+    for (let j = i + 1; j < len; j++) {
+      if (s[i] === s[j]) {
+        dp[i][j] = dp[i + 1][j - 1] + 2;
+      } else {
+        dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+
+  return dp[0][len - 1];
+};
+
 const s = "bbbab";
 const res = longestPalindromeSubseq(s);
 console.log("res->", res);
+
+/* 
+  总结：
+    与0647回文子串类似，有效半区仅在右上半区，左上半区不做统计。
+*/

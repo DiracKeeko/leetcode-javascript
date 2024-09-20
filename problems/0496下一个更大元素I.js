@@ -93,3 +93,44 @@ v3
     Your runtime beats 97.68 % of javascript submissions
     Your memory usage beats 44.27 % of javascript submissions (43.2 MB)
 */
+
+// v4 stock仅存储nums1中的元素 这个是一个不同于v1, v2, v3的思路
+var nextGreaterElement = function (nums1, nums2) {
+  const l1= nums1.length;
+  const res = Array(l1).fill(-1);
+  const stock = [];
+  for (const item of nums2) {
+    while (stock.length && item > stock[stock.length - 1]) {
+      const pre = stock.pop();
+      const preIndex = nums1.indexOf(pre);
+      res[preIndex] = item;
+    }
+    if (nums1.includes(item)) {
+      stock.push(item);
+    }
+  }
+  return res;
+};
+
+// v5 v4变体 在v4基础上加一个numToIndexMap存储index信息
+var nextGreaterElement = function (nums1, nums2) {
+  const l1 = nums1.length;
+  const res = Array(l1).fill(-1);
+  const stock = [];
+  const numToIndexMap = new Map();
+  for (let i = 0; i < l1; i++) {
+    numToIndexMap.set(nums1[i], i);
+  }
+
+  for (const item of nums2) {
+    while (stock.length && item > stock[stock.length - 1]) {
+      const pre = stock.pop();
+      const preIndex = numToIndexMap.get(pre);
+      res[preIndex] = item;
+    }
+    if (numToIndexMap.has(item)) {
+      stock.push(item);
+    }
+  }
+  return res;
+};

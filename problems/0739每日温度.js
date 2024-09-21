@@ -26,7 +26,7 @@ var dailyTemperatures = function (temperatures) {
   const l = temperatures.length;
   const res = Array(l).fill(0);
 
-  const stack = [0]; // 记录各个元素的index
+  const stack = [0]; // stack记录各个元素的index, 初始index = 0
   for (let i = 1; i < l; i++) {
     let topIndex = stack[stack.length - 1];
     if (temperatures[i] > temperatures[topIndex]) {

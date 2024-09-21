@@ -17,7 +17,7 @@
 var nextGreaterElements = function(nums) {
   const size = nums.length;
   const res = Array(size).fill(-1);
-  const stack = [0];
+  const stack = [0]; // stack记录各个元素的index
   for (let i = 1; i < size * 2; i++) { // 这里for循环的边界取 size * 2
     const reIndex = i % size; // 在这里取模
     while (stack.length && nums[reIndex] > nums[stack[stack.length - 1]]) {
@@ -31,3 +31,13 @@ var nextGreaterElements = function(nums) {
 
 const test = [1, 2, 1];
 const res = nextGreaterElements(test);
+
+/* 
+  总结:
+    这里是取了两遍。
+    
+    1. 在不成环的条件下，仅遍历一遍，没有比nums中item大的数字，则item中的元素是-1
+    2. 在有环条件下，遍历两遍，通过reIndex的做法，让nums中item之前的数字也有了与item比较的机会。
+        2.1 遍历两遍的情况下，没有比item更大的数字的话，两个item的reIndex留在stack中，res[index]默认值还是-1，
+        2.2 若有比item大的数字，则res[index]会变更一次，第二次遍历的时候，找不到比res[reIndex]更大的数字，所以reIndex留在stack中，但res[index]已经变更了。
+*/

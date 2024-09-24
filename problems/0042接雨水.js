@@ -107,7 +107,7 @@ var trap = function(height) {
       stack.push(i);
     } else {
       // height[i] > height[topIndex]
-      while (stack.length && curH > height[topIndex]) {
+      while (stack.length && curH > height[topIndex]) { // while循环中，height相同的时候不会进入当前循环
         const bottomH = height[stack.pop()];
         topIndex = stack[stack.length - 1];
         if (stack.length) { 
@@ -132,3 +132,44 @@ Your memory usage beats 54.3 % of javascript submissions (43.4 MB)
 */
 const test = [0,1,0,2,1,0,1,3,2,1,2,1];
 const res = trap(test);
+
+
+/* 
+// 下面v4是一个笨拙的单调栈解法
+ */
+// v4
+var trap = function (arr) {
+  let res = 0;
+  const stack = [0]; // 存放index 递增栈
+
+  for (let i = 1; i < arr.length; i++) {
+    const preHeight = arr[stack[stack.length - 1]];
+    const cur = arr[i];
+    if (preHeight > cur) {
+      stack.push(i);
+    } else if (preHeight === cur) {
+      stack.pop();
+      stack.push(i);
+    } else {
+      // preHeight < cur
+      while (
+        stack.length > 1 &&
+        arr[stack[stack.length - 1]] < cur &&
+        arr[stack[stack.length - 2]] > arr[stack[stack.length - 1]]
+      ) {
+        const preIndex = stack.pop();
+        const lastIndex = stack[stack.length - 1];
+        const w = i - lastIndex - 1;
+        const h = Math.min(cur, arr[lastIndex]) - arr[preIndex];
+        console.log({w, h});
+        console.log(w * h);
+        res += w * h;
+        if (cur === arr[lastIndex]) {
+          stack.pop();
+        }
+      }
+      stack.push(i);
+    }
+  }
+  return res;
+};

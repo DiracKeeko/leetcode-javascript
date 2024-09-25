@@ -46,7 +46,42 @@ var largestRectangleArea = function(heights) {
 };
 // v1暴力搜索会超时
 
-// v2 暴力搜索优化 (优化left和right的查找过程)
+// v21 用leftMin 和 rightMin数组记录当前元素左右两侧第一个比当前元素小的元素的下标
+// v21的搜索过程依然不够快，会超时
+var largestRectangleArea = function (heights) {
+  const len = heights.length;
+
+  const leftMinArr = [-1]; // 存放第i位左侧，第一个比heights[i]小的下标index
+  for (let i = 1; i < len; i++) {
+    let pre = i - 1;
+    while (pre >= 0 && heights[pre] >= heights[i]) {
+      pre -= 1;
+    }
+    leftMinArr.push(pre);
+  }
+
+  const rightMinArr = [len];
+  for (let i = len - 2; i >= 0; i--) {
+    let next = i + 1;
+    while (next < len && heights[next] >= heights[i]) {
+      next += 1;
+    }
+    rightMinArr.unshift(next);
+  }
+
+  let res = 0;
+  for (let i = 0; i < len; i++) {
+    const w = rightMinArr[i] - leftMinArr[i] - 1;
+    const h = heights[i];
+    const s = w * h;
+    if (s > res) {
+      res = s;
+    }
+  }
+  return res;
+};
+
+// v22 暴力搜索优化 (优化left和right的查找过程)
 var largestRectangleArea = function(heights) {
   let max = 0;
   const size = heights.length;

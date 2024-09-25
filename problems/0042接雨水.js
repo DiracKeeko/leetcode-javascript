@@ -100,15 +100,15 @@ var trap = function(height) {
   for (let i = 1; i < height.length; i++) {
     let topIndex = stack[stack.length - 1];
     const curH = height[i];
-    if (curH < height[topIndex]) {
+    if (height[topIndex] > curH) {
       stack.push(i);
-    } else if (curH === height[topIndex]) {
+    } else if (height[topIndex] === height[i]) {
       stack.pop();
       stack.push(i);
     } else {
-      // height[i] > height[topIndex]
-      while (stack.length && curH > height[topIndex]) { // while循环中，height相同的时候不会进入当前循环
-        const bottomH = height[stack.pop()];
+      // height[topIndex] < curH
+      while (stack.length && height[topIndex] < curH) { // while循环中，height相同的时候不会进入当前循环
+        const bottomH = height[stack.pop()]; // 不论是否有bottom左边的更高点，bottom这个位置都需要被弹出
         topIndex = stack[stack.length - 1];
         if (stack.length) { 
           // 这里还有个特殊情况，如果凹槽底部找到了，但是左边没有柱子了，就不做计算。

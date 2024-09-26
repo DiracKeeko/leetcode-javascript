@@ -46,8 +46,9 @@ var largestRectangleArea = function(heights) {
 };
 // v1暴力搜索会超时
 
-// v21 用leftMin 和 rightMin数组记录当前元素左右两侧第一个比当前元素小的元素的下标
-// v21的搜索过程依然不够快，会超时
+// v21 暴力搜索优化 
+// 用leftMin 和 rightMin数组记录当前元素左右两侧第一个比当前元素小的元素的下标
+// v21 搜索leftMin, rightMin 的搜索过程依然不够快，会超时
 var largestRectangleArea = function (heights) {
   const len = heights.length;
 
@@ -81,20 +82,20 @@ var largestRectangleArea = function (heights) {
   return res;
 };
 
-// v22 暴力搜索优化 (优化left和right的查找过程)
+// v22 搜索过程初步优化 (优化left和right的查找过程)
 var largestRectangleArea = function(heights) {
   let max = 0;
-  const size = heights.length;
+  const len = heights.length;
 
-  // 用leftArr数组记录h[i]左侧第一个比h[i]小的元素的index
-  const leftArr = Array(size).fill(-1);
-  for (let i = 1; i < size; i++) {
+  // 用leftMinArr数组记录h[i]左侧第一个比h[i]小的元素的index
+  const leftMinArr = Array(len).fill(-1);
+  for (let i = 1; i < len; i++) {
     const curH = heights[i];
     const leftH = heights[i - 1];
     if (leftH < curH) {
-      leftArr[i] = i - 1;
+      leftMinArr[i] = i - 1;
     } else if (leftH === curH) {
-      leftArr[i] = leftArr[i - 1];
+      leftMinArr[i] = leftMinArr[i - 1];
     } else {
       // leftH > curH
       let leftIndex = i - 2;
@@ -103,45 +104,130 @@ var largestRectangleArea = function(heights) {
           break;
         }
       }
-      leftArr[i] = leftIndex;
+      leftMinArr[i] = leftIndex;
     }
   }
 
-  // 用rightArr数组记录h[i]右侧第一个比h[i]小的元素的index
-  const rightArr = Array(size).fill(size);
-  for (let i = size - 2; i >= 0; i--) {
+  // 用rightMinArr数组记录h[i]右侧第一个比h[i]小的元素的index
+  const rightMinArr = Array(len).fill(len);
+  for (let i = len - 2; i >= 0; i--) {
     const curH = heights[i];
     const rightH = heights[i + 1];
     if (rightH < curH) {
-      rightArr[i] = i + 1;
+      rightMinArr[i] = i + 1;
     } else if (rightH === curH) {
-      rightArr[i] = rightArr[i + 1];
+      rightMinArr[i] = rightMinArr[i + 1];
     } else {
       // rightH > curH
       let rightIndex = i + 2;
-      for (; rightIndex < size; rightIndex++) {
+      for (; rightIndex < len; rightIndex++) {
         if (heights[rightIndex] < curH) {
           break;
         }
       }
-      rightArr[i] = rightIndex;
+      rightMinArr[i] = rightIndex;
     }
   }
 
   for (let i = 0; i < heights.length; i++) {
     const curH = heights[i];
-    const w = rightArr[i] - leftArr[i] - 1;
+    const w = rightMinArr[i] - leftMinArr[i] - 1;
     const s = w * curH;
     max = Math.max(max, s);
   }
   return max;
 };
 /* 
-v2 已经可以通过
+v22 已经可以通过
 Accepted
 98/98 cases passed (452 ms)
 Your runtime beats 7.29 % of javascript submissions
 Your memory usage beats 89.91 % of javascript submissions (52.1 MB)
+*/
+
+// v23 final 搜索过程终极优化
+var largestRectangleArea = function(heights) {
+  const len = heights.length;
+  const leftMinArr = Array(len).fill(-1); 
+  // leftMinArr数组记录h[i]左侧第一个比h[i]小的元素的下标index
+  // (最左的比h[i]小的元素)
+  const rightMinArr = Array(len).fill(len);
+
+  for (let i = 1; i < len; i++) {
+    let pre = i - 1;
+    while (pre >= 0 && heights[pre] >= heights[i]) {
+      pre = leftMinArr[pre];
+    }
+    leftMinArr[i] = pre;
+  }
+
+  for (let i = len - 2; i >= 0; i--) {
+    let next = i + 1;
+    while (next < len && heights[next] >= heights[i]) {
+      next = rightMinArr[next];
+    }
+    rightMinArr[i] = next;
+  }
+
+  let maxArea = 0;
+  for (let i = 0; i < len; i++) {
+    const w = rightMinArr[i] - leftMinArr[i] - 1;
+    const h = heights[i];
+    const s = w * h;
+    if (s > maxArea) {
+      maxArea = s;
+    }
+  }
+  return maxArea;
+};
+
+/* 
+v23 表现十分优秀 2024年9月26日
+99/99 cases passed (80 ms)
+Your runtime beats 93.44 % of javascript submissions
+Your memory usage beats 69.5 % of javascript submissions (62.8 MB)
+*/
+
+/* 
+一个leftMinArr的推导过程
+
+const heights = [1, 2, 3, 3, 2, 1, 3];
+const leftMinArr = [-1]; // 初始条件
+
+i = 1;
+  pre = 0;
+  leftMinArr[1] = 0;
+  leftMinArr = [-1, 0];
+  
+i = 2;
+  pre = 1;
+  leftMinArr[2] = 1;
+  leftMinArr = [-1, 0, 1];
+
+i = 3;
+  pre = 2;
+  pre = leftMinArr[2] = 1;
+  leftMinArr[3] = 1;
+  leftMinArr = [-1, 0, 1, 1];
+
+i = 4;
+  pre = 3;
+  pre = leftMinArr[3] = 1;
+  pre = leftMinArr[1] = 0;
+  leftMinArr[4] = 0;
+  leftMinArr = [-1, 0, 1, 1, 0];
+
+i = 5;
+  pre = 4;
+  pre = leftMinArr[4] = 0;
+  pre = leftMinArr[0] = -1;
+  leftMinArr[5] = -1;
+  leftMinArr = [-1, 0, 1, 1, 0, -1];
+
+i = 6;
+  pre = 5;
+  leftMinArr[6] = 5;
+  leftMinArr = [-1, 0, 1, 1, 0, -1, 5];
 */
 
 // v3 单调栈 top -> bottom 单调递减

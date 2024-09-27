@@ -145,12 +145,14 @@ Your runtime beats 7.29 % of javascript submissions
 Your memory usage beats 89.91 % of javascript submissions (52.1 MB)
 */
 
-// v23 final 搜索过程终极优化
+// v23 final 搜索过程终极优化 (详细解释和推导过程)
 var largestRectangleArea = function(heights) {
   const len = heights.length;
   const leftMinArr = Array(len).fill(-1); 
   // leftMinArr数组记录h[i]左侧第一个比h[i]小的元素的下标index
-  // (最左的比h[i]小的元素)
+  // (h[i]左侧，离h[i]最近的，比h[i]小的元素的index)
+  // [1, 2, 3, 7, 7, 6, 7, 7, 5, 4]; 对"6"这个元素，找到左侧3的index 以及右侧5的index，计算"77677"的面积
+  // [1, 3, 3, 7, 7, 6, 7, 7, 5, 4]; 对"6"这个元素，有两个3，应该找右边的那个3。
   const rightMinArr = Array(len).fill(len);
 
   for (let i = 1; i < len; i++) {
@@ -230,7 +232,8 @@ i = 6;
   leftMinArr = [-1, 0, 1, 1, 0, -1, 5];
 */
 
-// v3 单调栈 top -> bottom 单调递减
+// v3 单调栈 top -> bottom 单调递减 
+// (stack逐步放入大的元素，遇到小的元素的时候，开始while)
 var largestRectangleArea = function(heights) {
   const hArr = [0, ...heights, 0]; // 首、尾 填充 0
   const size = hArr.length;
@@ -259,11 +262,12 @@ var largestRectangleArea = function(heights) {
   }
   return max;
 }
+// const case = [1, 3, 3, 7, 7, 6, 7, 7, 5, 4]; 以这个case数组为例，体会单调栈做法的操作逻辑。
 
 /* 
 v3
 Accepted
-98/98 cases passed (96 ms)
-Your runtime beats 71.78 % of javascript submissions
-Your memory usage beats 57.95 % of javascript submissions (55.8 MB)
+99/99 cases passed (90 ms)
+Your runtime beats 76.71 % of javascript submissions
+Your memory usage beats 46.2 % of javascript submissions (65.3 MB)
 */

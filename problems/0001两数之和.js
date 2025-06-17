@@ -13,6 +13,15 @@
  */
 
 /* 
+输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+
+输入：nums = [3,2,4], target = 6
+输出：[1,2]
+*/
+
+/* 
   时间复杂度：O(n)
   空间复杂度：O(n)
 */
@@ -21,10 +30,10 @@ var twoSum = function(nums, target) {
   for (let i = 0; i < nums.length; i++) {
     const curNum = nums[i];
     const needNum = target - curNum;
-    if (curNum in obj) {
-      return [i, obj[curNum]];
+    if (needNum in obj) {
+      return [i, obj[needNum]];
     } else {
-      obj[needNum] = i;
+      obj[curNum] = i;
     }
   }
 };

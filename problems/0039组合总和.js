@@ -11,8 +11,14 @@
 */
 
 /* 
-  输入：candidates = [2,3,6,7], target = 7
-  输出：[[2,2,3],[7]]
+输入：candidates = [2,3,6,7], target = 7
+输出：[[2,2,3],[7]]
+
+输入: candidates = [2,3,5], target = 8
+输出: [[2,2,2,2],[2,3,3],[3,5]]
+
+输入: candidates = [2], target = 1
+输出: []
 */
 
 /**
@@ -29,7 +35,7 @@ var combinationSum = function(candidates, target) {
 
   function backtrack(sum, curIndex) {
     if (sum === target) {
-      res.push([...path]);
+      res.push([...path]); // 一定要解构，相当于深拷贝
       return;
     }
 

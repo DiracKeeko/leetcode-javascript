@@ -25,6 +25,7 @@ var restoreIpAddresses = function(s) {
   backtrack(1, 0);
   return res;
 
+  // dotNum = 1, 表示开始寻找第1段ip地址
   function backtrack(dotNum, startIndex) {
     if (dotNum === 5) {
       res.push(path.join("."));
@@ -54,3 +55,25 @@ function isLegal(str) {
   }
   return false;
 }
+
+
+/**
+ 让我们分析一下当 dotNum === 4 时，也就是在寻找第4段 IP 地址时，代码在做什么。
+
+  此时，for 循环正在尝试从 startIndex 开始，切分出字符串 s 的最后一部分作为第4段。
+
+  使用 continue (您的原始代码)
+  for 循环开始，i 从 startIndex + 1 往后走。
+
+  假设剩余字符串是 "11135"，startIndex 指向 "1" 的前面。
+
+  循环第一次，i 指向第一个 "1" 后面，切片是 "1"。此时 i < s.length。
+
+  if (dotNum === 4 && i < s.length) 条件成立。
+
+  执行 continue。意思是：“我知道第4段不能只取"1"，因为后面还有"1135"没用完。所以这次尝试无效，跳过它，进行下一次循环，试试切片"11"”。
+
+  循环会继续，直到最后一次循环，i === s.length，切片为 "11135"。这时 if 条件不成立，代码会继续向下执行 isLegal 判断，这是正确的逻辑。
+
+  ✅ 结论：continue 正确地跳过了所有无效的、没有用尽剩余字符串的切分尝试，并保留了最后一次（唯一可能正确的）尝试。
+ */

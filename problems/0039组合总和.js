@@ -43,7 +43,8 @@ var combinationSum = function(candidates, target) {
     for (let i = curIndex; i < candidates.length; i++) {
       let num = candidates[i];
       if (num + sum > target) {
-        break;
+        // break;
+        return; // 效率更高
       }
       path.push(num);
       sum += num;

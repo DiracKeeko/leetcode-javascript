@@ -8,6 +8,14 @@
   回文串 是正着读和反着读都一样的字符串。
 */
 
+/* 
+  输入：s = "aab"
+  输出：[["a","a","b"],["aa","b"]]
+
+  输入：s = "a"
+  输出：[["a"]]
+*/
+
 /**
  * @param {string} s
  * @return {string[][]}
@@ -25,12 +33,14 @@ var partition = function (s) {
       return;
     }
     for (let i = startIndex + 1; i <= length; i++) {
-      const slice = s.slice(startIndex, i);
-      if (isPalindrome(slice)) {
-        path.push(slice)
+      const sliceStr = s.slice(startIndex, i);
+      if (isPalindrome(sliceStr)) {
+        path.push(sliceStr)
         backtrack(i);
         path.pop();
-      }
+      } 
+      // 这里不能 else { return; }
+      // 对"aba"这种情况, "ab"不是回文, 但"aba"是回文
     }
   }
 };

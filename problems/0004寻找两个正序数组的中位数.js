@@ -72,6 +72,39 @@ Your runtime beats 84.97 % of javascript submissions
 Your memory usage beats 93.86 % of javascript submissions (44.9 MB)
 */
 
+
+// v2.2 一个不同的写法
+var findMedianSortedArrays = function (nums1, nums2) {
+  const [len1, len2] = [nums1.length, nums2.length];
+  const sum = len1 + len2;
+  const mid = sum >> 1;
+
+  const arr = [];
+  let i = 0;
+  let j = 0;
+  while (arr.length <= mid) {
+    if (i === len1) {
+      arr.push(nums2[j]);
+      j += 1;
+    } else if (j === len2) {
+      arr.push(nums1[i]);
+      i += 1;
+    } else if (nums1[i] < nums2[j]) {
+      arr.push(nums1[i]);
+      i += 1;
+    } else {
+      arr.push(nums2[j]);
+      j += 1;
+    }
+  }
+
+  if ((sum) % 2 === 1) {
+    return arr[mid];
+  } else {
+    return (arr[mid] + arr[mid - 1]) / 2;
+  }
+};
+
 // v3 二分查找
 var findMedianSortedArrays = function (nums1, nums2) {
   // 两数组长度之和

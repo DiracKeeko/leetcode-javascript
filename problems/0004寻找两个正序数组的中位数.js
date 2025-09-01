@@ -106,6 +106,10 @@ var findMedianSortedArrays = function (nums1, nums2) {
 };
 
 // v3 二分查找
+// const totalLeft = (m + n + 1) >> 1;
+// 数组总长度为偶数 左边数字个数 = 右边数字个数
+// 数组总长度为奇数 左边数字个数 = 右边数字个数 + 1 (左边个数多一个)
+// 这种定义的方式是左边元素比右边元素多一个
 var findMedianSortedArrays = function (nums1, nums2) {
   if (nums1.length > nums2.length) {
     [nums1, nums2] = [nums2, nums1];
@@ -291,3 +295,11 @@ res = 3;
 const arr1 = [1, 2, 3];
 const arr2 = [1, 3, 5, 7];
 console.log(findMedianSortedArrays(arr1, arr2));
+
+
+// 视频解析
+// 1 力扣官方 代码不太好理解
+// https://www.bilibili.com/video/BV1Xv411z76J
+
+// 2
+// https://www.bilibili.com/video/BV1H5411c7oC

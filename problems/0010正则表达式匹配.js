@@ -65,6 +65,38 @@ dp[i][j] === p[j - 2] === "." && dp[i - 1][j]
 var isMatch = function(s, p) {
   const m = s.length;
   const n = p.length;
+
+  const dp = Array(m + 1).fill(false).map(() => Array(n + 1).fill(false));
+
+  dp[0][0] = true;
+  for (let j = 1; j <= n; j++) {
+    if (p[j - 1] === "*") {
+      dp[0][j] = dp[0][j - 2];
+    }
+  }
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const sChar = s[i - 1];
+      const pChar = p[j - 1];
+      if (pChar !== "*") {
+        dp[i][j] = dp[i - 1][j - 1] && (pChar === sChar || pChar === ".");
+      } else {
+        const pPrevChar = p[j - 2];
+        dp[i][j] = dp[i][j - 2] || (dp[i - 1][j] && (pPrevChar === sChar || pPrevChar === "."));
+      }
+    }
+  }
+
+  return dp[m][n];
+}
+
+
+
+
+var isMatch = function(s, p) {
+  const m = s.length;
+  const n = p.length;
   
   const dp = Array(m + 1).fill(false).map(() => Array(n + 1).fill(false));
 
@@ -96,7 +128,7 @@ var isMatch = function(s, p) {
           matchOneOrMore = dp[i - 1][j];
         }
 
-        dp[i][j] = matchZero | matchOneOrMore;
+        dp[i][j] = matchZero || matchOneOrMore;
       }
     }
   }

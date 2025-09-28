@@ -26,6 +26,7 @@ var threeSum = function (nums) {
   nums.sort((a, b) => a - b); // a - b从小到大排序
   let res = [];
   for (let i = 0; i < nums.length; i++) {
+    // ↓ 这里必须是 nums[i] === nums[i - 1] // 必须先放入，想一想 [0, 0, 0]的情况
     if (nums[i] === nums[i - 1]) {
       continue;
     }
@@ -34,7 +35,7 @@ var threeSum = function (nums) {
     let right = nums.length - 1;
     while (left < right) {
       if (curNum + nums[left] + nums[right] === 0) {
-        res.push([curNum, nums[left], nums[right]]); // 先放入
+        res.push([curNum, nums[left], nums[right]]); // 先放入，想一想 [0, 0, 0]的情况
         while (nums[left] === nums[left + 1]) {
           // ↑ 判断下一步，去重
           left++;

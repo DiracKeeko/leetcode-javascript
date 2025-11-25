@@ -156,6 +156,12 @@ Your runtime beats 92.16 % of javascript submissions
 Your memory usage beats 96.85 % of javascript submissions (44.9 MB)
 */
 
+var findMid = function (nums1, nums2) {
+  if (nums1.length > nums2.length) {
+    return findMid(nums2, nums1);
+  }
+  // ... 逻辑实现
+}
 
 /* 
 核心思想：寻找完美的分割线

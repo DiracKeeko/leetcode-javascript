@@ -51,3 +51,27 @@ var twoSum = function(nums, target) {
 //     }
 //   }
 // };
+
+// v2 换用map
+var twoSum = function(nums, target) {
+  const map = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    const curNum = nums[i];
+    const restNum = target - curNum;
+    if (map.has(restNum)) {
+      const preIndex = map.get(restNum)
+      return [preIndex, i];
+    } else {
+      map.set(curNum, i);
+    }
+  }
+};
+
+/* 
+v2
+Accepted
+63/63 cases passed (2 ms)
+Your runtime beats 90.66 % of javascript submissions
+Your memory usage beats 78.13 % of javascript submissions (55.3 MB)
+耗时 0:3:41
+*/

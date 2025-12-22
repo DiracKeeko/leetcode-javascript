@@ -46,8 +46,35 @@ Your memory usage beats 12.09 % of javascript submissions (60.1 MB)
 
 
 // v1的效率不高
-// v2 使用双指针
 
+// v2 也是一种遍历 效率不高
+var lengthOfLongestSubstring = function(s) {
+  let max = 0;
+  for (let i = 0; i < s.length; i++) {
+    const map = new Map();
+    map.set(s[i], 1);
+    for (let j = i + 1; j < s.length; j++) {
+      const curChar = s[j];
+      if (map.has(curChar)) {
+        break;
+      } else {
+        map.set(curChar, 1);
+      }
+    }
+    max = Math.max(map.size, max);
+  }
+  return max;
+};
+
+/* 
+v2
+Accepted
+988/988 cases passed (149 ms)
+Your runtime beats 6.8 % of javascript submissions
+Your memory usage beats 14.57 % of javascript submissions (59.9 MB)
+*/
+
+// v3 使用双指针 (滑动窗口)
 var lengthOfLongestSubstring = function(s) {
   let max = 0;
   const len = s.length;
@@ -59,7 +86,8 @@ var lengthOfLongestSubstring = function(s) {
     if (!map.has(s[r])) {
       map.set(s[r], true);
       r += 1;
-      max = Math.max(max, r - l);
+      max = Math.max(max, map.size);
+      // max = Math.max(max, r - l);
     } else {
       map.delete(s[l]);
       l += 1;
@@ -67,3 +95,11 @@ var lengthOfLongestSubstring = function(s) {
   }
   return max;
 };
+
+/* 
+v3
+Accepted
+988/988 cases passed (7 ms)
+Your runtime beats 59.51 % of javascript submissions
+Your memory usage beats 34.21 % of javascript submissions (57.6 MB)
+*/

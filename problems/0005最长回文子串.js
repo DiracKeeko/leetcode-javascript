@@ -69,3 +69,34 @@ var longestPalindrome = function(s) {
   }
   return res;
 };
+
+// v2.1 
+var longestPalindrome = function(s) {
+  const str = "#" + s.split("").join("#") + "#";
+
+  let max = 0
+  let res = "";
+  for (let i = 0; i < str.length; i++) {
+    let l = i - 1;
+    let r = i + 1;
+    while (l > 0 && r <= str.length) {
+      if (str[l] === str[r]) {
+        l -= 1;
+        r += 1;
+      } else {
+        break;
+      }
+    }
+    
+    l += 1;
+    r -= 1;
+    const strSlice = str.slice(l, r + 1);
+    const trimStr = strSlice.split("#").join("");
+    const len = trimStr.length;
+    if (len > max) {
+      max = len;
+      res = trimStr;
+    }
+  }
+  return res;
+};

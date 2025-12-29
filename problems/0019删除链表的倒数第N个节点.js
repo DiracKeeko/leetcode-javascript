@@ -53,3 +53,29 @@ var removeNthFromEnd1 = function(head, n) {
 
   return sentry.next;
 };
+
+// v3 相比于v2更好理解 快指针 需要走n步，最后
+// 如倒数第二个节点，实际上快指针先走两步，等到快指针
+var removeNthFromEnd = function(head, n) {
+  const dummy = new ListNode(0, head);
+  let fast = dummy;
+  let step = 0;
+  while (step < n) {
+    fast = fast.next;
+    step += 1;
+  }
+  let slow = dummy;
+  while (fast.next) {
+    fast = fast.next;
+    slow = slow.next;
+  }
+  slow.next = slow.next.next;
+  return dummy.next;
+};
+
+/* 
+208/208 cases passed (0 ms)
+Your runtime beats 100 % of javascript submissions
+Your memory usage beats 98.59 % of javascript submissions (54.5 MB)
+耗时 0:10:23
+*/

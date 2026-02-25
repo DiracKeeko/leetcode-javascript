@@ -12,24 +12,37 @@
  * @param {string} s
  * @return {boolean}
  */
+// 思路: 利用stack
+/* 
+  1. 循环遍历，向stack中放置leftPart，如果遇到rightPart，则将stack中的leftPart Pop出来，通过map找到rightPart，与对应的rightPart进行比较，如果key !== rightPart 直接终止，返回false
+  2. 循环终止后，再看stack的长度，如果长度不为0，也是false
+*/
+// 
 var isValid = function(s) {
-  let bracketObj = {
+  const bracketMap = {
     "(": ")",
     "[": "]",
     "{": "}"
   }
-  let stack = [];
-
-  for (let i = 0; i < s.length; i++) {
-    const curStr = s[i];
-    if (curStr in bracketObj) {
-      stack.push(curStr);
+  const stack = [];
+  for (const key of s) {
+    if (key in bracketMap) {
+      stack.push(key);
     } else {
-      const popStr = stack.pop();
-      if (curStr !== popStr) {
-        return false
+      const leftPart = stack.pop();
+      const rightPart = bracketMap[leftPart];
+      if (rightPart !== key) {
+        return false;
       }
     }
   }
-  return !stack.length;
+  return stack.length === 0;
 };
+
+/* 
+Accepted
+102/102 cases passed (3 ms)
+Your runtime beats 84.16 % of javascript submissions
+Your memory usage beats 74.76 % of javascript submissions (55.6 MB)
+
+*/

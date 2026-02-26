@@ -87,13 +87,13 @@ function mergeTwoLists (list1, list2) {
 
 // v3 最纯正的方式，但是会超时，一个用例都过不了。
 var mergeKLists = function(lists) {
-  const dummy = new ListNode();
+  const dummy = new ListNode(0, null);
   let head = dummy;
   while (lists.some(head => head !== null)) {
     let minNode = new ListNode(Infinity);
-    for (const first of lists) {
-      if (first && first.val < minNode.val) {
-        minNode = first;
+    for (const curList of lists) {
+      if (curList && curList.val < minNode.val) {
+        minNode = curList;
       }
     }
     head.next = minNode;

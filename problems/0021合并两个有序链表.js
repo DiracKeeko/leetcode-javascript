@@ -40,12 +40,32 @@ var mergeTwoLists = function(list1, list2) {
   return dummy.next;
 };
 
-// 应该用下面这种
+// 应该用下面这种 (最优解)
 var mergeTwoLists2 = function (list1, list2) {
   const dummy = new ListNode();
   let head = dummy;
   while (list1 && list2) {
     if (list1.val < list2.val) {
+      head.next = list1;
+      list1 = list1.next;
+    } else {
+      head.next = list2;
+      list2 = list2.next;
+    }
+    head = head.next;
+  }
+  head.next = list1 || list2;
+  return dummy.next;
+};
+
+var mergeTwoLists = function(list1, list2) {
+  const dummy = new ListNode(0, null);
+  let head = dummy;
+
+  while (list1 && list2) {
+    const n1 = list1.val;
+    const n2 = list2.val;
+    if (n1 < n2) {
       head.next = list1;
       list1 = list1.next;
     } else {

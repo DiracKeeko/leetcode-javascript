@@ -82,6 +82,5 @@ var nextPermutation = function(nums) {
 Accepted
 266/266 cases passed (0 ms)
 Your runtime beats 100 % of javascript submissions
-Your memory usage beats 58.14 % of javascript submissions (55 MB)
-耗时 0:9:24
+Your memory usage beats 64.61 % of javascript submissions (54.9 MB)
 */

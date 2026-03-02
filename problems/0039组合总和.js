@@ -33,7 +33,7 @@ var combinationSum = function(candidates, target) {
   backtrack(0, 0);
   return res;
 
-  function backtrack(sum, curIndex) {
+  function backtrack(curIndex, sum) {
     if (sum === target) {
       res.push([...path]); // 一定要解构，相当于深拷贝
       return;

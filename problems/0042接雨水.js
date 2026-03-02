@@ -56,7 +56,7 @@ var trap = function(height) {
   const size = height.length;
 
   const leftArr = Array(size).fill(0); // leftArr[i] 表示位置[0, i]范围内(包括0, i) 的最大高度
-  const rightArr = Array(size).fill(0);
+  const rightArr = Array(size).fill(0); // rightArr[j] 表示[j, size - 1] 范围内的最大高度
 
   leftArr[0] = height[0];
   for (let i = 1; i < size; i++) {

@@ -66,3 +66,41 @@ res-> [
 ]
 
 */
+
+
+// v2 更容易理解，backtrack 参数更少
+var permute = function(nums) {
+  const size = nums.length;
+  const res = [];
+  const path = [];
+  const usedArr = Array(size).fill(false);
+  backtrack(usedArr);
+  return res;
+
+  function backtrack(usedArr) {
+    if (path.length === nums.length) {
+      res.push([...path]);
+      return;
+    }
+
+    for (let i = 0; i < size; i++) {
+      if (usedArr[i]) {
+        continue;
+      }
+      path.push(nums[i]);
+      usedArr[i] = true;
+      backtrack(usedArr);
+      usedArr[i] = false;
+      path.pop();
+    }
+  }
+  
+};
+
+/* 
+Accepted
+26/26 cases passed (3 ms)
+Your runtime beats 72.21 % of javascript submissions
+Your memory usage beats 80.21 % of javascript submissions (59.7 MB)
+
+*/

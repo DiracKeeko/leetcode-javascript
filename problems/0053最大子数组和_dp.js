@@ -47,6 +47,7 @@ var maxSubArray = function(nums) {
 4、一层for循环，从前到后
 */
 // 返回sumMaxArr的最大值
+// v2
 var maxSubArray = function(nums) {
   const dp = [nums[0]];
 
@@ -61,3 +62,26 @@ var maxSubArray = function(nums) {
 const test = [-2,1,-3,4,-1,2,1,-5,4];
 const res = maxSubArray(test);
 console.log({res});
+
+
+// v1
+var maxSubArray = function(nums) {
+  const dp = []; // dp[i] 是已nums[i] 结尾的最大连续数组的和
+  dp[0] = nums[0];
+
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i - 1] < 0) { // 判断nums[i - 1] 这里的效率不如v2
+      dp[i] = Math.max(nums[i], nums[i] + dp[i - 1]);
+    } else {
+      dp[i] = nums[i] + dp[i - 1];
+    }
+  }
+  return Math.max(...dp);
+};
+
+/* 
+v1
+210/210 cases passed (15 ms)
+Your runtime beats 5.7 % of javascript submissions
+Your memory usage beats 5.02 % of javascript submissions (69.3 MB)
+*/

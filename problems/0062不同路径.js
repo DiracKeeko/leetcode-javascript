@@ -101,3 +101,10 @@ var uniquePaths = function(m, n) {
   }
   return arr[m - 1][n - 1];
 };
+
+/* 
+Accepted
+64/64 cases passed (0 ms)
+Your runtime beats 100 % of javascript submissions
+Your memory usage beats 50.39 % of javascript submissions (54.2 MB)
+*/

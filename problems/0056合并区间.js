@@ -21,6 +21,8 @@
  * @param {number[][]} intervals
  * @return {number[][]}
  */
+
+// 思路都一样，先排序，再比较 prevEnd 和 curStart
 var merge = function(intervals) {
   if (intervals.length <= 1) {
     return intervals;
@@ -63,6 +65,23 @@ var merge = function(intervals) {
     }
   }
   res.push([left, right]);
+  return res;
+};
+
+// v3 
+var merge = function(intervals) {
+  intervals.sort(([a], [b]) => a - b); // 按 startIndex 从小到大排序
+  const res = [intervals[0]];
+  for (const arr of intervals) {
+    const prevPair = res[res.length - 1];
+    const [, pEnd] = prevPair;
+    const [start, end] = arr;
+    if (start <= pEnd) {
+      prevPair[1] = Math.max(pEnd, end)
+    } else {
+      res.push(arr);
+    }
+  }
   return res;
 };
 

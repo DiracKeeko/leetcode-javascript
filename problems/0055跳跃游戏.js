@@ -12,28 +12,21 @@
  * @return {boolean}
  */
 var canJump = function(nums) {
-  let cover = 0;
-  for (let i = 0; i <= cover; i++) {
-    let curPoint = nums[i] + i;
-    if (curPoint >= nums.length - 1) {
+  let maxReach = 0;
+  const target = nums.length - 1;
+
+  for (let i = 0; i <= maxReach; i++) {
+    if (maxReach >= target) {
       return true;
     }
-    cover = Math.max(curPoint, cover);
+    maxReach = Math.max(maxReach, i + nums[i]);
   }
   return false;
 };
 
-// v2
-var canJump = function(nums) {
-  const max = nums.length - 1; // 是index的位置
-  let cover = nums[0];
-  for (let i = 0; i <= cover; i++) {
-    if (nums[i] + i > cover) {
-      cover = nums[i] + i;
-    }
-    if (cover >= max) {
-      return true;
-    }
-  }
-  return false;
-};
+/* 
+Accepted
+178/178 cases passed (0 ms)
+Your runtime beats 100 % of javascript submissions
+Your memory usage beats 28.68 % of javascript submissions (59.3 MB)
+*/

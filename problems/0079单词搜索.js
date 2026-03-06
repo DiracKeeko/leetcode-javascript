@@ -20,6 +20,9 @@
  * @param {string} word
  * @return {boolean}
  */
+
+// 思路是深度优先遍历 也是一种回溯
+// v1 写的比较繁杂
 var exist = function (board, word) {
   if (word.length === 0) {
     return true;
@@ -69,3 +72,45 @@ var exist = function (board, word) {
     return ret;
   }
 };
+
+// v2
+var exist = function(board, word) {
+  const m = board.length;
+  const n = board[0].length;
+  
+  function dfs(i, j, k) {
+    if (k === word.length) {
+      return true;
+    }
+    if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] !== word[k]) {
+      return false;
+    }
+    
+    const temp = board[i][j];
+    board[i][j] = "#";
+
+    const res = dfs(i - 1, j, k + 1)
+      || dfs(i + 1, j, k + 1)
+      || dfs(i, j - 1, k + 1)
+      || dfs(i, j + 1, k + 1)
+
+    board[i][j] = temp;
+    return res;
+  }
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (dfs(i, j, 0)) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+/* 
+Accepted
+88/88 cases passed (381 ms)
+Your runtime beats 47.61 % of javascript submissions
+Your memory usage beats 97.27 % of javascript submissions (54.2 MB)
+*/

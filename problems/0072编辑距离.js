@@ -59,16 +59,13 @@
  * @return {number}
  */
 var minDistance = function (word1, word2) {
-  const [l1, l2] = [word1.length, word2.length];
-  const dp = [
-    Array(l2 + 1)
-      .fill(0)
-      .map((item, index) => index),
-  ];
+  const [m, n] = [word1.length, word2.length];
+  const firstLine = Array(n + 1).fill(0).map((item, index) => index);
+  const dp = [firstLine];
 
-  for (let i = 1; i <= l1; i++) {
+  for (let i = 1; i <= m; i++) {
     dp[i] = [i];
-    for (let j = 1; j <= l2; j++) {
+    for (let j = 1; j <= n; j++) {
       if (word1[i - 1] === word2[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1];
       } else {
@@ -76,8 +73,8 @@ var minDistance = function (word1, word2) {
       }
     }
   }
-  console.table(dp);
-  return dp[l1][l2];
+  // console.table(dp);
+  return dp[m][n];
 };
 
 const w1 = "horse",

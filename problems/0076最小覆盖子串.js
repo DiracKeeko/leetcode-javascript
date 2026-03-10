@@ -60,13 +60,13 @@ var minWindow = function(s, t) {
       continue;
     }
     window[rightStr] = window[rightStr] || 0;
-    if (window[rightStr] < need[rightStr]) {
-      distance += 1;
+    if (window[rightStr] < need[rightStr]) { 
+      distance += 1; // distance 处理
     }
     window[rightStr] += 1;
     right += 1;
 
-    while (distance === tLen) {
+    while (distance === tLen) { // 这个条件务必注意
       const curLen = right - left;
       if (curLen < minLen) {
         minLen = curLen;
@@ -80,7 +80,7 @@ var minWindow = function(s, t) {
       }
       window[leftStr] = window[leftStr] || 0;
       if (window[leftStr] === need[leftStr]) {
-        distance -= 1;
+        distance -= 1; // distance 处理, 只在相等的时候减一
       }
       window[leftStr] -= 1;
       left += 1;

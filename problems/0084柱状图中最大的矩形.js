@@ -242,7 +242,7 @@ var largestRectangleArea = function(heights) {
 
   for (let i = 1; i < size; i++) {
     const curH = hArr[i];
-    let topIndex = stack[stack.length - 1];
+    let topIndex = stack[stack.length - 1]; // 用topIndex来传递
     if (curH > hArr[topIndex]) {
       stack.push(i);
     } else if (curH === hArr[topIndex]) {
@@ -251,9 +251,9 @@ var largestRectangleArea = function(heights) {
     } else {
       while (stack.length && curH < hArr[topIndex]) {
         const midH = hArr[stack.pop()];
-        topIndex = stack[stack.length - 1];
-        const leftIndex = topIndex;
-        const w = i - leftIndex - 1;
+        const prevIndex = stack[stack.length - 1];
+        topIndex = prevIndex; // 更新topIndex
+        const w = i - prevIndex - 1;
         const s = w * midH;
         max = Math.max(s, max);
       }
@@ -263,6 +263,7 @@ var largestRectangleArea = function(heights) {
   return max;
 }
 // const case = [1, 3, 3, 7, 7, 6, 7, 7, 5, 4]; 以这个case数组为例，体会单调栈做法的操作逻辑。
+// 单调栈只存储从小到大的柱子的index; 当新的矮柱子进入时，开始循环遍历矮柱子之前的高柱子，按高柱子的高度找到判定找到的最大面积
 
 /* 
 v3

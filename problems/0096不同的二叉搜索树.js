@@ -58,4 +58,26 @@ var numTrees = function(n) {
   return dp[n];
 };
 
+var numTrees = function(n) {
+  // 1. 初始化 dp 数组，dp[i] 表示 i 个节点能组成的 BST 数量
+  const dp = new Array(n + 1).fill(0);
+  
+  // 2. 基础状态
+  dp[0] = 1;
+  dp[1] = 1;
+
+  // 3. 开始填充 dp 表
+  // i 代表当前总共有多少个节点
+  for (let i = 2; i <= n; i++) {
+      // j 代表以哪一个数字作为根节点
+      for (let j = 1; j <= i; j++) {
+          // dp[i] = Σ (以 j 为根时，左子树形态数 * 右子树形态数)
+          // 左边有 j-1 个节点，右边有 i-j 个节点
+          dp[i] += dp[j - 1] * dp[i - j];
+      }
+  }
+
+  return dp[n];
+};
+
 numTrees(3);

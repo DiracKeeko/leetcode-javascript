@@ -26,11 +26,7 @@
  */
 
 // 解题思路：用中序遍历去遍历二叉搜索树，会得到一个从小到大排列的数组
-var isValidBST = function(root) {
-  if (!root) {
-    return false;
-  }
-
+var isValidBST = function (root) {
   const valArr = [];
   function traverse(node) {
     if (!node) {
@@ -52,24 +48,41 @@ var isValidBST = function(root) {
   return true;
 };
 
-// v2 这种方法有问题，不能验证树的多层之间的大小关系(只能验证到上下两层)
+// v2
 /* 
   注意：不能单纯的比较左节点小于中间节点，右节点大于中间节点就完事了。
 */
-var isValidBST = function(root) {
-  const res = [];
-  function recursion(root) {
-    const l = root.left ? root.left.val : -Infinity;
-    const r = root.right ? root.right.val : Infinity;
-    const cur = root.val;
-    if (l < cur && cur < r) {
-      res.push(true);
-      root.left && recursion(root.left);
-      root.right && recursion(root.right);
-    } else {
-      res.push(false);
+var isValidBST = function (root) {
+  return validate(root, -Infinity, Infinity);
+
+  /**
+   * @param {TreeNode} node 当前节点
+   * @param {number} min 允许的最小值
+   * @param {number} max 允许的最大值
+   */
+  function validate(node, min, max) {
+    if (node === null) {
+      return true;
     }
+
+    // 2. 检查当前节点是否在允许的范围内
+    // 注意：BST 要求是严格大于/小于，不能等于
+    if (node.val <= min || node.val >= max) {
+      return false;
+    } // 只有 min < node.val < max 返回 true
+
+    // 3. 递归检查左右子树
+    // 左子树的最大值不能超过当前节点值
+    // 右子树的最小值不能低于当前节点值
+    return (
+      validate(node.left, min, node.val) && validate(node.right, node.val, max)
+    );
   }
-  recursion(root);
-  return res.every(item => item);
 };
+/* 
+v2
+Accepted
+86/86 cases passed (1 ms)
+Your runtime beats 86.96 % of javascript submissions
+Your memory usage beats 55.71 % of javascript submissions (58.2 MB)
+*/

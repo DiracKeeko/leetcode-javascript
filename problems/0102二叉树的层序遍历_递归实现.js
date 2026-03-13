@@ -18,15 +18,16 @@ var levelOrder = function (root) {
 // 第二版实现 精简了判空代码 主体逻辑未变
 var levelOrder = function(root) {
   const res = [];
-  function dp(node, level) {
+  preOrder(root, 0);
+  return res;
+
+  function preOrder(node, deep) {
     if (!node) {
       return;
     }
-    res[level] = res[level] || [];
-    res[level].push(node.val);
-    dp(node.left, level + 1);
-    dp(node.right, level + 1);
+    res[deep] = res[deep] || [];
+    res[deep].push(node.val);
+    node.left && preOrder(node.left, deep + 1);
+    node.right && preOrder(node.right, deep + 1);
   }
-  dp(root, 0);
-  return res;
 };

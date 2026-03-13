@@ -25,18 +25,18 @@ var levelOrder = function(root) {
   }
 
   const res = [];
-  let cur = [root];
-
-  while (cur.length) {
-    const next = [];
-    const levelRes = [];
-    for (const node of cur) {
-      levelRes.push(node.val);
-      node.left && next.push(node.left);
-      node.right && next.push(node.right);
+  let temp = [root];
+  
+  while (temp.length > 0) {
+    const layerValArr = [];
+    const nextLayer = [];
+    for (const curNode of temp) {
+      layerValArr.push(curNode.val);
+      curNode.left && nextLayer.push(curNode.left);
+      curNode.right && nextLayer.push(curNode.right);
     }
-    res.push(levelRes);
-    cur = next;
+    res.push(layerValArr);
+    temp = nextLayer;
   }
   return res;
 };

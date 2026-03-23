@@ -89,3 +89,27 @@ var maxProfit = function(prices) {
   }
   return res;
 };
+
+// v3
+// 在前进的过程中，不断锁定“历史最低点”，并捕捉“瞬时最高利润”。
+var maxProfit = function(prices) {
+  let maxGain = 0; // 记录最大收益
+  let minPrice = Infinity; // 记录最低点
+  for (let i = 0; i < prices.length; i++) {
+    const curPrice = prices[i];
+    minPrice = Math.min(curPrice, minPrice);
+    maxGain = Math.max(curPrice - minPrice, maxGain);
+  }
+  return maxGain;
+};
+
+/* 
+v3
+
+Accepted
+212/212 cases passed (3 ms)
+Your runtime beats 77.21 % of javascript submissions
+Your memory usage beats 50.35 % of javascript submissions (65.5 MB)
+耗时 0:7:48
+*/
+

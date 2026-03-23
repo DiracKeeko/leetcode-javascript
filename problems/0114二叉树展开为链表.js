@@ -20,6 +20,7 @@
  * @param {TreeNode} root
  * @return {void} Do not return anything, modify root in-place instead.
  */
+// v1
 var flatten = function(root) {
   let res = [];
   function preOrder(node) {
@@ -39,3 +40,34 @@ var flatten = function(root) {
     prev.right = cur;
   }
 };
+
+/* 
+// v1
+Accepted
+225/225 cases passed (1 ms)
+Your runtime beats 53.53 % of javascript submissions
+Your memory usage beats 27.98 % of javascript submissions (56.6 MB)
+耗时 0:6:2
+*/
+
+// v2
+var flatten = function(root) {
+  let prev = null;
+  function traverse(node) {
+    if (!node) {
+      return;
+    }
+    traverse(node.right);
+    traverse(node.left);
+    node.right = prev;
+    node.left = null;
+    prev = node;
+  }
+  traverse(root);
+};
+/* 
+Accepted
+225/225 cases passed (0 ms)
+Your runtime beats 100 % of javascript submissions
+Your memory usage beats 47.81 % of javascript submissions (56.4 MB)
+*/

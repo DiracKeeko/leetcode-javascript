@@ -20,22 +20,24 @@
 
 var buildTree = function(preorder, inorder) {
   const root = new TreeNode(preorder[0]);
-
-  function iteration(node, pre, ino) {
-    const index = ino.indexOf(node.val);
-    const left = ino.slice(0, index);
-    const right = ino.slice(index + 1);
-    if (left.length) {
-      // 有length, 说明根节点(node)有左子树
-      node.left = new TreeNode(pre[1]);
-      iteration(node.left, pre.slice(1, left.length + 1), left);
-    }
-    if (right.length) {
-      node.right = new TreeNode(pre[left.length + 1]);
-      iteration(node.right, pre.slice(left.length + 1), right);
-    }
-  }
-
   iteration(root, preorder, inorder);
   return root;
+
+  function iteration(root, pre, ino) {
+    const rootVal = root.val;
+    const rootIndex = ino.indexOf(rootVal);
+    const inoLeft = ino.slice(0, rootIndex);
+    const inoRight = ino.slice(rootIndex + 1);
+
+    if (inoLeft.length) {
+      root.left = new TreeNode(pre[1]);
+      const preLeft = pre.slice(1, inoLeft.length + 1);
+      iteration(root.left, preLeft, inoLeft);
+    }
+    if (inoRight.length) {
+      root.right = new TreeNode(pre[inoLeft.length + 1]);
+      const preRight = pre.slice(inoLeft.length + 1);
+      iteration(root.right, preRight, inoRight);
+    }
+  }
 };

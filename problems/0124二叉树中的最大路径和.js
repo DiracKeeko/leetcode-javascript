@@ -8,6 +8,22 @@
 给你一个二叉树的根节点 root ，返回其 最大路径和 。
 */
 
+/* 
+核心逻辑：节点的“双重身份”
+在递归过程中，对于每一个节点，它其实扮演着两个角色：
+
+作为“最高点（顶点）”：
+路径从左子树上来，经过它，再下到右子树去。此时，这条路径就此封口，不能再向上汇报给父节点了。
+路径和 = node.val + 左子树贡献 + 右子树贡献。
+
+作为“贡献者（桥梁）”：
+它只能选择左子树或右子树中较长的那一根，加上自己，向上汇报给父节点，由父节点去拼更大的路径。
+贡献值 = node.val + max(左子树贡献, 右子树贡献)。
+
+关键点：负数处理
+如果某棵子树算出来的贡献是负数，我们宁愿舍弃它（即贡献设为 0），也不要把它加进来拖累总和。
+*/
+
 var maxPathSum = function(root) {
   let max = -Infinity; // 最大路径和
   function fundPathSum(node) { // 寻找单边的路径和最大值
@@ -23,4 +39,30 @@ var maxPathSum = function(root) {
   return max;
 };
 
+// v2 仅仅是优化代码结构，语义强化
+var maxPathSum = function(root) {
+  let maxSum = -Infinity;
 
+  function dfs(node) {
+    if (!node) {
+      return 0;
+    }
+    const left = Math.max(dfs(node.left), 0);
+    const right = Math.max(dfs(node.right), 0);
+    const selfMax = left + right + node.val;
+    maxSum = Math.max(maxSum, selfMax);
+    return Math.max(left, right, 0) + node.val;
+  }
+
+  dfs(root);
+  return maxSum;
+};
+
+/* 
+v2
+
+Accepted
+96/96 cases passed (3 ms)
+Your runtime beats 32.97 % of javascript submissions
+Your memory usage beats 61.85 % of javascript submissions (63.8 MB)
+*/

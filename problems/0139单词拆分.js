@@ -65,26 +65,34 @@ var wordBreak = function(s, wordDict) {
 
 // v2 效率更高
 var wordBreak = function(s, wordDict) {
-  const len = s.length;
-  const dp = Array(len + 1).fill(false);
+  const n = s.length;
+  const dp = Array(n + 1).fill(false);
   dp[0] = true;
 
-  for (let i = 1; i <= len; i++) {
+  for (let i = 1; i <= n; i++) {
     for (const word of wordDict) {
       if (dp[i]) {
-        continue;   
+        continue;
       }
-      const le = word.length;
-      const startIndex = i - le;
+      const len = word.length;
+      const startIndex = i - len;
       if (startIndex >= 0) {
-        const cutStr = s.slice(startIndex, i);
-        dp[i] = dp[startIndex] && cutStr === word;
+        const curStr = s.slice(startIndex, i)
+        dp[i] = dp[startIndex] && word === curStr;
       }
     }
   }
-  console.log(dp);
-  return dp[len];
+  return dp[n];
 };
+
+/* 
+v2
+Accepted
+48/48 cases passed (12 ms)
+Your runtime beats 24.06 % of javascript submissions
+Your memory usage beats 74.41 % of javascript submissions (55.4 MB)
+耗时 0:7:33
+*/
 
 const s = "leetcode", wordDict = ["leet","code"];
 // const s = "ab", wordDict = ["a","b"];

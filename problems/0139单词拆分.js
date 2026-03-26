@@ -94,6 +94,32 @@ Your memory usage beats 74.41 % of javascript submissions (55.4 MB)
 耗时 0:7:33
 */
 
+// v3
+var wordBreak = function(s, wordDict) {
+  const n = s.length;
+  const dp = Array(n + 1).fill(false);
+  dp[0] = true;
+  const wordSet = new Set(wordDict);
+
+  for (let i = 1; i <= n; i++) {
+    for (let j = 0; j < i; j++) {
+      let curSlice = s.slice(j, i);
+      if (dp[j] && wordSet.has(curSlice)) {
+        dp[i] = true;
+        break;
+      }
+    }
+  }
+  return dp[n];
+};
+/* 
+v3
+Accepted
+48/48 cases passed (8 ms)
+Your runtime beats 53.35 % of javascript submissions
+Your memory usage beats 73.06 % of javascript submissions (55.6 MB)
+*/
+
 const s = "leetcode", wordDict = ["leet","code"];
 // const s = "ab", wordDict = ["a","b"];
 wordBreak(s, wordDict);

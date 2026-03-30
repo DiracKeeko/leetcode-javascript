@@ -44,3 +44,20 @@ LRUCache.prototype.put = function (key, value) {
   }
   this.cache.set(key, value);
 };
+
+// v2 一个更容易理解的put操作
+/* 
+LRUCache.prototype.put = function(key, value) {
+  
+  if (this.cache.has(key)) {
+    this.cache.delete(key);
+    this.cache.set(key, value);
+  } else {
+    const size = this.cache.size;
+    if (size >= this.max) {
+      this.cache.delete(this.cache.keys().next().value);
+    }
+    this.cache.set(key, value);
+  }
+};
+*/

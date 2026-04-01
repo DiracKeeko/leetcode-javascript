@@ -15,42 +15,54 @@ int getMin() 获取堆栈中的最小元素。
 
 */
 
-var MinStack = function() {
-  this.stack = []; // 这个是最小栈
-  this.mins = [Infinity]; // 用一个数组来辅助最小栈的实现
-};
-
-function last(arr) {
+function lastNum(arr) {
   return arr[arr.length - 1];
 }
+
+var MinStack = function() {
+  this.stack = [];
+  this.minStack = [];
+};
+
 /** 
  * @param {number} val
  * @return {void}
  */
 MinStack.prototype.push = function(val) {
-  const minItem = Math.min(last(this.mins), val);
   this.stack.push(val);
-  this.mins.push(minItem);
+  if (this.minStack.length === 0 || val < lastNum(this.minStack)) {
+    this.minStack.push(val);
+  } else {
+    this.minStack.push(lastNum(this.minStack));
+  }
 };
 
 /**
  * @return {void}
  */
 MinStack.prototype.pop = function() {
-  this.stack.pop();
-  this.mins.pop();
+  this.minStack.pop();
+  return this.stack.pop();
 };
 
 /**
  * @return {number}
  */
 MinStack.prototype.top = function() {
-  return last(this.stack);
+  return this.stack[this.stack.length - 1];
 };
 
 /**
  * @return {number}
  */
 MinStack.prototype.getMin = function() {
-  return last(this.mins); 
+  return lastNum(this.minStack);
 };
+
+/* 
+Accepted
+33/33 cases passed (8 ms)
+Your runtime beats 79.42 % of javascript submissions
+Your memory usage beats 20 % of javascript submissions (66 MB)
+
+*/

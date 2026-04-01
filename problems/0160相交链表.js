@@ -19,6 +19,7 @@
  * @param {ListNode} headB
  * @return {ListNode}
  */
+// v1 用集合set，这是最简单的方式
 var getIntersectionNode = function(headA, headB) {
   const nodeSet = new Set();
   while (headA) {
@@ -34,26 +35,34 @@ var getIntersectionNode = function(headA, headB) {
   }
   return null;
 };
+/* 
+v1
+Accepted
+41/41 cases passed (80 ms)
+Your runtime beats 41.21 % of javascript submissions
+Your memory usage beats 5.14 % of javascript submissions (69.7 MB)
+*/
 
-// 数组也可以 
-// 查看提交结果，用集合set的执行时间，要远小于用数组Arr
-// 判定复杂对象，用Set()  set.add(); set.has()
-// 题干只要求保持链表结构，因此不需要使用curA
+
+// v2
 var getIntersectionNode = function(headA, headB) {
-  const arr = [];
-  let curA = headA; // 不需要使用curA, curB
-  while (curA) {
-    arr.push(curA);
-    curA = curA.next;
-  }
-  
-  let curB = headB;
-  while (curB) {
-    if (arr.includes(curB)) {
-      return curB;
-    }
-    curB = curB.next;
+  if (!headA && !headB) {
+    return null;
   }
 
-  return null;
+  let pa = headA;
+  let pb = headB;
+  while (pa !== pb) {
+    pa = (pa === null) ? headB : pa.next;
+    pb = (pb === null) ? headA : pb.next;
+  }
+  return pa;
 };
+
+/* 
+Accepted
+41/41 cases passed (87 ms)
+Your runtime beats 21.72 % of javascript submissions
+Your memory usage beats 30.41 % of javascript submissions (66.9 MB)
+*/
+

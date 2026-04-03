@@ -17,6 +17,7 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
+// v1
 var reverseList = function(head) {
   const sentry = new ListNode();
   while (head) {
@@ -27,6 +28,13 @@ var reverseList = function(head) {
   }
   return sentry.next;
 };
+/* 
+v1
+Accepted
+28/28 cases passed (1 ms)
+Your runtime beats 9.92 % of javascript submissions
+Your memory usage beats 27.21 % of javascript submissions (58.3 MB)
+*/
 
 // 上下是两种不同的实现
 var reverseList = function(head) {
